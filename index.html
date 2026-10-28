@@ -1319,7 +1319,7 @@ const CONFIG={
     // Banana and coconut plantations by the khor (lagoon), west Salalah
     farm:{O:[16.99829,54.06995],home:[79,-193],area:{x:140,y:-295,w:405,h:275},obst:[{type:"khor",c:[479,97],r:170},{type:"palm",c:[330,-114],h:25,r:35},{type:"palm",c:[219,-249],h:25,r:35}]},
     // Mughsail mountain road (west of Mughsail): a rocky ridge beside the road and a roadside viewpoint where visitors stop
-    road:{O:[16.87667,53.75565],home:[0,0],spots:[[-309,-224],[-1257,-528],[-1742,-393]],obst:[{type:"ridge",c:[-784,-454],h:70,r:110},{type:"view",c:[-1143,-350],r:60}]}
+    road:{O:[16.87667,53.75565],nz:18,home:[0,0],spots:[[-309,-224],[-1257,-528],[-1742,-393]],obst:[{type:"ridge",c:[-784,-454],h:70,r:110},{type:"view",c:[-1143,-350],r:60}]}
   },
   sim:{
     map:{home:[1500,1010]},
@@ -1341,6 +1341,9 @@ let MODE=null;
 const map=L.map("map",{zoomControl:false,attributionControl:false,zoomSnap:0,zoomDelta:.5,maxZoom:21,minZoom:9,zoomAnimation:false,inertia:false,keyboard:false,dragging:false,touchZoom:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false});
 const ATTR=L.control.attribution({prefix:false,position:"bottomright"}).addTo(map);
 function attrPos(){const rtl=document.documentElement.dir==="rtl";ATTR.setPosition(S.screen==="home"&&rtl?"bottomleft":"bottomright");}
+let NZ=19,miniTiles=null;
+/* Esri imagery is less detailed in some places: stop at the deepest zoom that has real photos there (else it shows "Map data not yet available") */
+function setNZ(z){if(z===NZ)return;NZ=z;tiles.options.maxNativeZoom=z;tiles.redraw();if(miniTiles){miniTiles.options.maxNativeZoom=z;miniTiles.redraw();}}
 const tiles=L.tileLayer(CONFIG.tiles,{maxNativeZoom:19,maxZoom:21,crossOrigin:"anonymous",attribution:CONFIG.attribution});
 let tileOK=0,tileErr=0;
 tiles.on("tileload",()=>{tileOK++;if(!MODE)setMode("real");});
@@ -1356,7 +1359,7 @@ function viewOf(O,m=map){const p0=m.latLngToContainerPoint(O);const s=256*Math.p
 
 let mini=null;
 function ensureMini(){if(mini)return;mini=L.map("mini",{zoomControl:false,attributionControl:false,dragging:false,touchZoom:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,zoomSnap:0,zoomAnimation:false,fadeAnimation:false});
-  if(MODE==="real")L.tileLayer(CONFIG.tiles,{maxNativeZoom:19,maxZoom:21,crossOrigin:"anonymous"}).addTo(mini);else $("#miniWrap").style.background="#8db86a";mini.setView(map.getCenter(),14);}
+  if(MODE==="real")miniTiles=L.tileLayer(CONFIG.tiles,{maxNativeZoom:NZ,maxZoom:21,crossOrigin:"anonymous"}).addTo(mini);else $("#miniWrap").style.background="#8db86a";mini.setView(map.getCenter(),14);}
 
 const ov=$("#ov"),ox=ov.getContext("2d"),mo=$("#miniOv"),mx=mo.getContext("2d"),at=$("#att"),ax=at.getContext("2d");let OW=0,OH=0,DPR=1;
 function sizeCv(){DPR=Math.min(2,window.devicePixelRatio||1);OW=innerWidth;OH=innerHeight;ov.width=OW*DPR;ov.height=OH*DPR;ox.setTransform(DPR,0,0,DPR,0,0);
@@ -1438,7 +1441,7 @@ function goHome(){closeModal();SIM.phase="home";SIM.key=null;S.screen="home";att
   if(MODE==="sim")simHome();else map.setView(CONFIG.homeView.center,CONFIG.homeView.zoom,{animate:false});motorSound(false);}
 
 /* ============ mission ============ */
-function startMission(k){if(!MODE)setMode(tileOK?"real":"sim");SIM.key=k;SIM.mis=MIS[k];SIM.G=geom(k);SIM.attempts=0;SIM.feed=[];S.screen="sim";attrPos();showUI("plan");
+function startMission(k){if(!MODE)setMode(tileOK?"real":"sim");SIM.key=k;SIM.mis=MIS[k];SIM.G=geom(k);setNZ(SIM.G.nz||19);SIM.attempts=0;SIM.feed=[];S.screen="sim";attrPos();showUI("plan");
   $("#misTxt").textContent=t(SIM.mis.title);$("#routeSub").textContent=t(SIM.mis.title)+" · "+t(SIM.mis.tags[0]);resetPlan(false);fitRegion();showBrief();}
 function resetPlan(keep){if(!keep){SIM.H=null;SIM.ov=60;SIM.ang=0;initShape();SIM.G.obst.forEach(o=>o.known=false);}SIM.sel=-1;SIM.fly=null;SIM.found={};SIM.photos=[];SIM.shots=0;SIM.flash=0;SIM.product=null;SIM.ndviStats=null;SIM.phase="brief";
   SIM.d={x:SIM.G.home[0],y:SIM.G.home[1],z:0,yaw:0,vz:0};if(SIM.mis.type==="area")initCells();else SIM.cells=null;showUI("plan");edit(true);changed();tele(true);}
