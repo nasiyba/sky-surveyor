@@ -1317,9 +1317,9 @@ const CONFIG={
     // New neighbourhood east of Salalah Airport: two new 4-storey buildings and a real electricity substation (from Esri imagery)
     map:{O:[17.03403,54.131],home:[-15,-388],area:{x:14,y:-379,w:506,h:337},obst:[{type:"sub",c:[424,-60],r:70},{type:"building",c:[131,-334],h:18,r:25},{type:"building",c:[407,-353],h:15,r:25}]},
     // Banana and coconut plantations by the khor (lagoon), west Salalah
-    farm:{O:[16.99829,54.06995],home:[-68,-274],area:{x:0,y:-297,w:547,h:285},obst:[{type:"khor",c:[479,97],r:150},{type:"palm",c:[330,-114],h:25,r:35},{type:"palm",c:[125,-217],h:25,r:35}]},
+    farm:{O:[16.99829,54.06995],home:[79,-193],area:{x:140,y:-295,w:405,h:275},obst:[{type:"khor",c:[479,97],r:170},{type:"palm",c:[330,-114],h:25,r:35},{type:"palm",c:[219,-249],h:25,r:35}]},
     // Mountain road near Wadi Darbat, with a farmstead (homes and animal pens) beside it
-    road:{O:[17.08556,54.46267],home:[0,0],spots:[[278,-537],[661,-1119],[920,-1611]],obst:[{type:"village",c:[838,-877],r:120},{type:"trees",c:[166,-1356],h:15,r:60}]}
+    road:{O:[17.08556,54.46267],home:[0,0],spots:[[278,-537],[661,-1119],[920,-1611]],obst:[{type:"village",c:[878,-932],r:200},{type:"trees",c:[697,-1149],h:15,r:30}]}
   },
   sim:{
     map:{home:[1500,1010]},
@@ -1448,7 +1448,7 @@ function setPhase(ph){SIM.phase=ph;const ana=ph==="analyze";$("#paneAna").hidden
   if(ph==="plan"){SIM.feed=[];speak(SIM.mis.intro[1][0],SIM.mis.intro[1][1]);setTimeout(()=>{if(SIM.phase==="plan")speak(...SIM.mis.tip);},1200);}
   showUI("plan");edit(true);changed();}
 function edit(on){ov.classList.toggle("edit",on&&SIM.phase!=="fly");map.dragging.disable();map.touchZoom.disable();map.scrollWheelZoom.disable();map.doubleClickZoom.disable();}
-function freeRect(){const narrow=innerWidth<=900,rtl=document.documentElement.dir==="rtl";if(narrow)return{x0:0,x1:OW,y0:150,y1:OH*.56-10};return rtl?{x0:384,x1:OW-80,y0:64,y1:OH}:{x0:80,x1:OW-384,y0:64,y1:OH};}
+function freeRect(){const narrow=innerWidth<=900,rtl=document.documentElement.dir==="rtl";if(narrow)return{x0:0,x1:OW,y0:150,y1:OH*.56-10};return rtl?{x0:384,x1:OW-80,y0:150,y1:OH}:{x0:80,x1:OW-384,y0:150,y1:OH};}
 function fitRegion(){const G=SIM.G,[x0,y0,x1,y1]=G.region;const b=L.latLngBounds([m2ll(G.O,x0,y1),m2ll(G.O,x1,y0)]);const f=freeRect();
   map.fitBounds(b,{paddingTopLeft:[f.x0+10,f.y0+70],paddingBottomRight:[OW-f.x1+10,OH-f.y1+16],animate:false});}
 function speak(who,key,p){SIM.feed.push({who,key,p});if(SIM.feed.length>2)SIM.feed.shift();renderFeed(true);beep("talk");}
