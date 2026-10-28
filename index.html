@@ -948,7 +948,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 <section id="home">
   <div class="hrow">
-    <div class="brand"><span class="mark" id="markHome"></span><span><b>GIS HUB</b><small data-i18n="product"></small></span></div>
+    <div class="brand"><span class="mark" id="markHome"></span><span><b>SKY SURVEYOR</b><small data-i18n="product"></small></span></div>
     <div class="hrow"><button class="ib" data-act="lang" aria-label="Language"></button><button class="ib" data-act="sound" aria-label="Sound"></button><button class="ib" data-act="fs" aria-label="Full screen"></button></div>
   </div>
   <div><span class="kick" data-i18n="festival"></span><h1 id="homeTitle"></h1></div>
@@ -958,7 +958,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     <div class="crewm"><span class="av" data-face="ah"></span><span><b data-i18n="ahName"></b><small data-i18n="ahRole"></small></span></div>
   </div>
   <div class="grp"><span class="kick" data-i18n="choose"></span><div class="mlist" id="mlist"></div></div>
-  <div class="foot"><span id="mapSrc"></span><span>GIS Hub · Salalah</span></div>
+  <div class="foot"><span id="mapSrc"></span><span>Salalah · Oman</span></div>
 </section>
 
 <header id="topbar" hidden>
@@ -1048,7 +1048,7 @@ en:{step1:"Analyze",st_ana:"Analyze the area",step2:"Plan route",step3:"Process 
  m3:"A hospital helipad sits next to this area. That is a no-fly zone, so cut that corner off your flight area.",
  f3:"Watch the tall telecom tower next to the farm. At 100 m we are not high enough above it, so keep your lines away from it.",
  r3:"A telecom tower stands close to the road. At 80 m we can't fly over it safely, so bend the route around it.",routeT:"Flight route",product:"Drone Mission Planner",festival:"Oman Science Festival",homeTitle:"Plan a real drone survey over <em>Salalah</em>",
- tagline:"Do the same work as a GIS Hub survey team: set up the flight on the satellite map, press GO, and turn the drone photos into a map.",
+ tagline:"Do the same work as a real drone survey team: set up the flight on the satellite map, press GO, and turn the drone photos into a map.",
  maName:"Maryam",maRole:"GIS engineer",ahName:"Ahmed",ahRole:"Drone pilot",choose:"Choose your mission",
  mapT:"Map the new neighbourhood",mapD:"Fly a grid over new houses and build an orthomosaic.",
  farmT:"Check farm health",farmD:"Survey a coconut farm and make a plant-health (NDVI) map.",
@@ -1103,7 +1103,7 @@ ar:{step1:"تحليل",st_ana:"حلّل المنطقة",step2:"تخطيط الم
  m3:"بجانب هذه المنطقة مهبط مروحيات للمستشفى، وهو منطقة يُمنع الطيران فيها. اقطع تلك الزاوية من منطقة الطيران.",
  f3:"انتبه لبرج الاتصالات العالي بجانب المزرعة. على ارتفاع 100 م لسنا أعلى منه بما يكفي، فأبعد خطوطك عنه.",
  r3:"يقف برج اتصالات قرب الطريق. على 80 م لا يمكننا التحليق فوقه بأمان، فاثنِ المسار حوله.",routeT:"مسار الطيران",product:"مخطِّط مهام الطائرات المسيّرة",festival:"مهرجان عُمان للعلوم",homeTitle:"خطّط لمسح حقيقي بالطائرة المسيّرة فوق <em>صلالة</em>",
- tagline:"اعمل ما يعمله فريق المسح في جيس هب: جهّز الرحلة على صورة الأقمار الصناعية، اضغط انطلق، وحوّل صور الطائرة إلى خريطة.",
+ tagline:"اعمل ما يعمله فريق مسح حقيقي بالطائرات المسيّرة: جهّز الرحلة على صورة الأقمار الصناعية، اضغط انطلق، وحوّل صور الطائرة إلى خريطة.",
  maName:"مريم",maRole:"مهندسة نظم معلومات جغرافية",ahName:"أحمد",ahRole:"طيار طائرات مسيّرة",choose:"اختر مهمتك",
  mapT:"ارسم خريطة الحي الجديد",mapD:"حلّق بشبكة فوق المنازل الجديدة وأنشئ صورة جوية مصحّحة.",
  farmT:"افحص صحة المزرعة",farmD:"امسح مزرعة نخيل جوز الهند واصنع خريطة صحة النبات (NDVI).",
@@ -1469,8 +1469,9 @@ function obIcon(o){return o.type==="heli"?"ban":o.type==="power"?"zap":o.type===
 function panel(){const m=SIM.mis;if(!m)return;const locked=SIM.phase!=="plan";
   const ana=SIM.phase==="analyze",left=SIM.G.obst.filter(o=>!o.known).length;$("#paneTitle").textContent=t(ana?"anaT":"routeT");
   $("#anaHint").innerHTML=ico("scan")+"<span>"+t(left?"anaHint":"anaDone")+"</span>";$("#anaLeft").textContent=t("anaLeft",{n:left});
-  $("#oblist").innerHTML=SIM.G.obst.map(o=>{const f=obInfo(o);return`<li><span class="ic ${o.known?"":"q"}">${o.known?ico(obIcon(o)):"<b>?</b>"}</span><span style="min-width:0"><b>${f.nm}</b><small>${o.known?f.sub:""}</small></span>${f.st?`<span class="st ${f.cls}">${f.st}</span>`:""}</li>`;}).join("");
+  $("#oblist").innerHTML=SIM.G.obst.map((o,i)=>{const f=obInfo(o);return`<li data-ob="${i}" style="cursor:pointer"><span class="ic ${o.known?"":"q"}">${o.known?ico(obIcon(o)):"<b>?</b>"}</span><span style="min-width:0"><b>${f.nm}</b><small>${o.known?f.sub:""}</small></span>${f.st?`<span class="st ${f.cls}">${f.st}</span>`:""}</li>`;}).join("");
   $("#oblist2").innerHTML=SIM.G.obst.map(o=>{const f=obInfo(o);return`<li><span class="ic">${ico(obIcon(o))}</span><span style="min-width:0"><b>${f.nm}</b><small>${o.type==="heli"?t("obZone"):t("obH",{h:o.h})}</small></span>${f.st?`<span class="st ${f.cls}">${f.st}</span>`:""}</li>`;}).join("");
+  document.querySelectorAll("#oblist li[data-ob]").forEach(li=>li.onclick=()=>{const o=SIM.G.obst[+li.dataset.ob];if(!o.known){map.panTo(m2ll(SIM.G.O,...obPos(o)),{animate:false});revealOb(o);}});
   const nb=$("#nextBtn");nb.hidden=!ana;nb.disabled=left>0;nb.innerHTML=t("nextPlan")+ico("arrow");$("#flyBtn").hidden=ana;
   $("#objs").innerHTML=checkList().map(([k,p,ok])=>`<li class="${ok?"ok":"no"}"><span class="ck">${ico("check")}</span><span>${t(k,p)}</span></li>`).join("");
   $("#altV").innerHTML=SIM.H?`${SIM.H}<small> m</small>`:"–";$("#gsdV").textContent=SIM.H?`GSD ${gsd(SIM.H)} cm/px`:"";
@@ -1498,10 +1499,11 @@ const PTR=new Map();let gest=null;
 function handlesPx(){const v=viewOf(SIM.G.O),sh=SIM.shape,area=SIM.mis.type==="area";const vs=sh.map(p=>v.P(p[0],p[1]));const mids=[];const n=sh.length,lim=area?n:n-1;
   for(let i=0;i<lim;i++){const a=vs[i],b=vs[(i+1)%n];if(Math.hypot(b[0]-a[0],b[1]-a[1])>60)mids.push({i,p:[(a[0]+b[0])/2,(a[1]+b[1])/2]});}return{v,vs,mids};}
 function obPos(o){return o.type==="power"?[(o.a[0]+o.b[0])/2,(o.a[1]+o.b[1])/2]:o.c;}
+function revealOb(o){if(!o||o.known)return;o.known=true;SIM.flash=.15;beep("ok");SIM.reveal={o,t:performance.now()};if(SIM.G.obst.every(q=>q.known)){beep("win");speak("ma","aGood");}panel();}
 ov.addEventListener("pointerdown",e=>{if(SIM.phase!=="plan"&&SIM.phase!=="analyze")return;e.preventDefault();try{ov.setPointerCapture(e.pointerId);}catch(_){}
-  PTR.set(e.pointerId,[e.clientX,e.clientY]);
-  if(PTR.size===1&&SIM.phase==="analyze"){const v=viewOf(SIM.G.O);let hit=null,bd=40;SIM.G.obst.forEach(o=>{const[p,q]=v.P(...obPos(o));const d=Math.hypot(p-e.clientX,q-e.clientY);if(d<bd){bd=d;hit=o;}});
-    if(hit&&!hit.known){hit.known=true;SIM.flash=.15;beep("ok");SIM.reveal={o:hit,t:performance.now()};if(SIM.G.obst.every(o=>o.known)){beep("win");speak("ma","aGood");}panel();gest={type:"tap"};return;}
+  if(e.isPrimary){PTR.clear();gest=null;}PTR.set(e.pointerId,[e.clientX,e.clientY]);
+  if(e.isPrimary&&SIM.phase==="analyze"){const v=viewOf(SIM.G.O);let hit=null,bd=60;SIM.G.obst.forEach(o=>{const[p,q]=v.P(...obPos(o));const d=Math.hypot(p-e.clientX,q-e.clientY);if(d<bd){bd=d;hit=o;}});
+    if(hit&&!hit.known){revealOb(hit);gest={type:"tap"};return;}
     gest={type:"pan",last:[e.clientX,e.clientY],x:e.clientX,y:e.clientY,moved:false};ov.classList.add("dragging");return;}
   if(PTR.size===1){const{v,vs,mids}=handlesPx();let hit=-1,bd=34;vs.forEach((p,i)=>{const d=Math.hypot(p[0]-e.clientX,p[1]-e.clientY);if(d<bd){bd=d;hit=i;}});
     if(hit>=0){gest={type:"vtx",i:hit,id:e.pointerId,moved:false,x:e.clientX,y:e.clientY};SIM.sel=hit;ov.classList.add("dragging");beep("tick");panel();return;}
@@ -1514,7 +1516,7 @@ ov.addEventListener("pointermove",e=>{if(!PTR.has(e.pointerId)||!gest)return;PTR
   else if(gest.type==="pan"){const dx=e.clientX-gest.last[0],dy=e.clientY-gest.last[1];gest.last=[e.clientX,e.clientY];if(Math.hypot(e.clientX-gest.x,e.clientY-gest.y)>5)gest.moved=true;map.panBy([-dx,-dy],{animate:false});}
   else if(gest.type==="pinch"&&PTR.size>=2){const[a,b]=[...PTR.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);map.setZoomAround(L.point((a[0]+b[0])/2,(a[1]+b[1])/2),clamp(gest.z0+Math.log2(d/gest.d0),11,20),{animate:false});}});
 function ptrUp(e){PTR.delete(e.pointerId);if(gest&&gest.type==="pan"&&!gest.moved&&SIM.sel>=0){SIM.sel=-1;panel();}if(PTR.size===0){gest=null;ov.classList.remove("dragging");}else if(gest&&gest.type==="pinch"){const[p]=[...PTR.values()];gest={type:"pan",last:p,x:p[0],y:p[1],moved:true};}}
-ov.addEventListener("pointerup",ptrUp);ov.addEventListener("pointercancel",ptrUp);
+ov.addEventListener("pointerup",ptrUp);ov.addEventListener("pointercancel",ptrUp);ov.addEventListener("lostpointercapture",e=>{if(PTR.has(e.pointerId))ptrUp(e);});
 ov.addEventListener("wheel",e=>{if(SIM.phase!=="plan"&&SIM.phase!=="analyze")return;e.preventDefault();map.setZoomAround(L.point(e.clientX,e.clientY),clamp(map.getZoom()-e.deltaY*.002,11,20),{animate:false});},{passive:false});
 $("#nextBtn").onclick=()=>{if(SIM.G.obst.some(o=>!o.known))return;beep("ok");setPhase("plan");};
 $("#tDel").onclick=()=>{if(SIM.sel<0)return;SIM.shape.splice(SIM.sel,1);SIM.sel=-1;changed();beep("tick");};
