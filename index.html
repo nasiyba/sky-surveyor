@@ -976,10 +976,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 <nav id="rail" hidden>
   <button class="rb" id="tDel" aria-label="Delete selected point"></button>
   <button class="rb" id="tReset" aria-label="Reset shape"></button>
-  <div class="rgap"></div>
-  <button class="rb" id="tIn" aria-label="Zoom in"></button>
-  <button class="rb" id="tOut" aria-label="Zoom out"></button>
-  <button class="rb" id="tFit" aria-label="Recenter"></button>
+  <button class="rb" id="tIn" hidden></button><button class="rb" id="tOut" hidden></button><button class="rb" id="tFit" hidden></button>
 </nav>
 
 <div id="comms" hidden></div>
@@ -1338,7 +1335,7 @@ const ROUTE="#2fe0a8",SEL="#ffcc00";
 
 /* ============ map + projection ============ */
 let MODE=null;
-const map=L.map("map",{zoomControl:false,attributionControl:false,zoomSnap:0,zoomDelta:.5,maxZoom:21,minZoom:9,zoomAnimation:false,inertia:true,keyboard:false});
+const map=L.map("map",{zoomControl:false,attributionControl:false,zoomSnap:0,zoomDelta:.5,maxZoom:21,minZoom:9,zoomAnimation:false,inertia:false,keyboard:false,dragging:false,touchZoom:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false});
 const ATTR=L.control.attribution({prefix:false,position:"bottomright"}).addTo(map);
 function attrPos(){const rtl=document.documentElement.dir==="rtl";ATTR.setPosition(S.screen==="home"&&rtl?"bottomleft":"bottomright");}
 const tiles=L.tileLayer(CONFIG.tiles,{maxNativeZoom:19,maxZoom:21,crossOrigin:"anonymous",attribution:CONFIG.attribution});
@@ -1361,7 +1358,7 @@ function ensureMini(){if(mini)return;mini=L.map("mini",{zoomControl:false,attrib
 const ov=$("#ov"),ox=ov.getContext("2d"),mo=$("#miniOv"),mx=mo.getContext("2d"),at=$("#att"),ax=at.getContext("2d");let OW=0,OH=0,DPR=1;
 function sizeCv(){DPR=Math.min(2,window.devicePixelRatio||1);OW=innerWidth;OH=innerHeight;ov.width=OW*DPR;ov.height=OH*DPR;ox.setTransform(DPR,0,0,DPR,0,0);
   for(const[c,x]of[[mo,mx],[at,ax]]){const r=c.getBoundingClientRect();c.width=Math.max(1,r.width*DPR);c.height=Math.max(1,r.height*DPR);x.setTransform(DPR,0,0,DPR,0,0);c._w=r.width;c._h=r.height;}}
-addEventListener("resize",()=>{sizeCv();map.invalidateSize();if(mini)mini.invalidateSize();});sizeCv();
+addEventListener("resize",()=>{sizeCv();map.invalidateSize();if(mini)mini.invalidateSize();if(SIM.phase==="analyze"||SIM.phase==="plan")setTimeout(fitRegion,60);});sizeCv();
 
 /* ============ drawing helpers ============ */
 function drawIncident(x,p,q,s,kind,ang){x.save();x.translate(p,q);x.rotate(ang);
@@ -1471,7 +1468,7 @@ function panel(){const m=SIM.mis;if(!m)return;const locked=SIM.phase!=="plan";
   $("#anaHint").innerHTML=ico("scan")+"<span>"+t(left?"anaHint":"anaDone")+"</span>";$("#anaLeft").textContent=t("anaLeft",{n:left});
   $("#oblist").innerHTML=SIM.G.obst.map((o,i)=>{const f=obInfo(o);return`<li data-ob="${i}" style="cursor:pointer"><span class="ic ${o.known?"":"q"}">${o.known?ico(obIcon(o)):"<b>?</b>"}</span><span style="min-width:0"><b>${f.nm}</b><small>${o.known?f.sub:""}</small></span>${f.st?`<span class="st ${f.cls}">${f.st}</span>`:""}</li>`;}).join("");
   $("#oblist2").innerHTML=SIM.G.obst.map(o=>{const f=obInfo(o);return`<li><span class="ic">${ico(obIcon(o))}</span><span style="min-width:0"><b>${f.nm}</b><small>${o.type==="heli"?t("obZone"):t("obH",{h:o.h})}</small></span>${f.st?`<span class="st ${f.cls}">${f.st}</span>`:""}</li>`;}).join("");
-  document.querySelectorAll("#oblist li[data-ob]").forEach(li=>li.onclick=()=>{const o=SIM.G.obst[+li.dataset.ob];if(!o.known){map.panTo(m2ll(SIM.G.O,...obPos(o)),{animate:false});revealOb(o);}});
+  document.querySelectorAll("#oblist li[data-ob]").forEach(li=>li.onclick=()=>{const o=SIM.G.obst[+li.dataset.ob];if(!o.known){revealOb(o);}});
   const nb=$("#nextBtn");nb.hidden=!ana;nb.disabled=left>0;nb.innerHTML=t("nextPlan")+ico("arrow");$("#flyBtn").hidden=ana;
   $("#objs").innerHTML=checkList().map(([k,p,ok])=>`<li class="${ok?"ok":"no"}"><span class="ck">${ico("check")}</span><span>${t(k,p)}</span></li>`).join("");
   $("#altV").innerHTML=SIM.H?`${SIM.H}<small> m</small>`:"–";$("#gsdV").textContent=SIM.H?`GSD ${gsd(SIM.H)} cm/px`:"";
@@ -1513,11 +1510,12 @@ ov.addEventListener("pointerdown",e=>{if(SIM.phase!=="plan"&&SIM.phase!=="analyz
   else if(PTR.size===2){const[a,b]=[...PTR.values()];gest={type:"pinch",d0:Math.hypot(a[0]-b[0],a[1]-b[1]),z0:map.getZoom()};}});
 ov.addEventListener("pointermove",e=>{if(!PTR.has(e.pointerId)||!gest)return;PTR.set(e.pointerId,[e.clientX,e.clientY]);
   if(gest.type==="vtx"&&e.pointerId===gest.id){if(!gest.moved&&Math.hypot(e.clientX-gest.x,e.clientY-gest.y)<5)return;gest.moved=true;SIM.shape[gest.i]=viewOf(SIM.G.O).inv(e.clientX,e.clientY);changed();}
-  else if(gest.type==="pan"){const dx=e.clientX-gest.last[0],dy=e.clientY-gest.last[1];gest.last=[e.clientX,e.clientY];if(Math.hypot(e.clientX-gest.x,e.clientY-gest.y)>5)gest.moved=true;map.panBy([-dx,-dy],{animate:false});}
-  else if(gest.type==="pinch"&&PTR.size>=2){const[a,b]=[...PTR.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);map.setZoomAround(L.point((a[0]+b[0])/2,(a[1]+b[1])/2),clamp(gest.z0+Math.log2(d/gest.d0),11,20),{animate:false});}});
+  else if(gest.type==="pan"){const dx=e.clientX-gest.last[0],dy=e.clientY-gest.last[1];gest.last=[e.clientX,e.clientY];if(Math.hypot(e.clientX-gest.x,e.clientY-gest.y)>5)gest.moved=true;}
+  else if(gest.type==="pinch"&&PTR.size>=2){const[a,b]=[...PTR.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);}});
 function ptrUp(e){PTR.delete(e.pointerId);if(gest&&gest.type==="pan"&&!gest.moved&&SIM.sel>=0){SIM.sel=-1;panel();}if(PTR.size===0){gest=null;ov.classList.remove("dragging");}else if(gest&&gest.type==="pinch"){const[p]=[...PTR.values()];gest={type:"pan",last:p,x:p[0],y:p[1],moved:true};}}
 ov.addEventListener("pointerup",ptrUp);ov.addEventListener("pointercancel",ptrUp);ov.addEventListener("lostpointercapture",e=>{if(PTR.has(e.pointerId))ptrUp(e);});
-ov.addEventListener("wheel",e=>{if(SIM.phase!=="plan"&&SIM.phase!=="analyze")return;e.preventDefault();map.setZoomAround(L.point(e.clientX,e.clientY),clamp(map.getZoom()-e.deltaY*.002,11,20),{animate:false});},{passive:false});
+ov.addEventListener("wheel",e=>{if(SIM.phase!=="plan"&&SIM.phase!=="analyze")return;e.preventDefault();},{passive:false});
+document.addEventListener("gesturestart",e=>e.preventDefault());
 $("#nextBtn").onclick=()=>{if(SIM.G.obst.some(o=>!o.known))return;beep("ok");setPhase("plan");};
 $("#tDel").onclick=()=>{if(SIM.sel<0)return;SIM.shape.splice(SIM.sel,1);SIM.sel=-1;changed();beep("tick");};
 $("#tReset").onclick=()=>{initShape();SIM.sel=-1;changed();fitRegion();beep("tick");};
