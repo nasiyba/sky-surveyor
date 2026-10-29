@@ -1308,30 +1308,30 @@ const FACE={
 function paintFaces(root=document){root.querySelectorAll("[data-face]").forEach(el=>{el.innerHTML=FACE[el.dataset.face];});}
 
 
-/* industrial survey quadcopter (large X-frame, folding arms, RTK antennas, front gimbal camera) — top view */
+/* light-grey enterprise survey quadcopter (folding X-arms, top antenna dome, front camera) — top view, original drawing */
 function drawDrone(x,cx,cy,r,ang,tm,alt=0){x.save();
-  const so=Math.min(60,alt*.5)+4;x.fillStyle=`rgba(0,0,0,${clamp(.32-alt/400,.08,.32)})`;x.beginPath();x.ellipse(cx+so,cy+so,r*1.45,r*1.45,0,0,7);x.fill();
-  x.translate(cx,cy);x.rotate(ang);const DK="#2a2e33",MD="#3d434a",LT="#5b636c";
-  // arms
-  x.lineCap="round";for(const[a,b]of[[-1,-1],[1,-1],[1,1],[-1,1]]){x.strokeStyle="#15181b";x.lineWidth=r*.34;x.beginPath();x.moveTo(a*r*.25,b*r*.25);x.lineTo(a*r,b*r);x.stroke();x.strokeStyle=MD;x.lineWidth=r*.22;x.stroke();
-    x.fillStyle="#cfd5db";x.beginPath();x.arc(a*r*.52,b*r*.52,r*.06,0,7);x.fill();}
-  // propellers (2-blade, blurred when spinning)
-  const spin=alt>0;for(const[a,b]of[[-r,-r],[r,-r],[r,r],[-r,r]]){
-    if(spin){x.fillStyle="rgba(210,218,226,.28)";x.beginPath();x.arc(a,b,r*.82,0,7);x.fill();x.strokeStyle="rgba(255,255,255,.35)";x.lineWidth=r*.04;x.stroke();}
-    const sp=tm*(spin?40:0)+(a>0?.6:-.4)+(b>0?1:0);x.save();x.translate(a,b);x.rotate(sp);x.fillStyle=spin?"rgba(30,34,38,.55)":"#1b1e21";
-    for(const s of[1,-1]){x.beginPath();x.ellipse(s*r*.4,0,r*.42,r*.09,0,0,7);x.fill();}x.restore();
-    x.fillStyle=DK;x.beginPath();x.arc(a,b,r*.17,0,7);x.fill();x.strokeStyle=LT;x.lineWidth=r*.05;x.stroke();x.fillStyle="#9aa3ab";x.beginPath();x.arc(a,b,r*.06,0,7);x.fill();}
+  const so=Math.min(60,alt*.5)+4;x.fillStyle=`rgba(0,0,0,${clamp(.34-alt/400,.1,.34)})`;x.beginPath();x.ellipse(cx+so,cy+so,r*1.4,r*1.4,0,0,7);x.fill();
+  x.translate(cx,cy);x.rotate(ang);const BODY="#c9ced3",EDGE="#6f777f",ARM="#b5bbc1",DARK="#1d2023";
+  // arms (front pair angled forward, rear pair angled back)
+  x.lineCap="round";const M=[[-1.02,-.82],[1.02,-.82],[1.02,.9],[-1.02,.9]];
+  for(const[a,b]of M){x.strokeStyle=EDGE;x.lineWidth=r*.26;x.beginPath();x.moveTo(a*r*.2,b*r*.25);x.lineTo(a*r,b*r);x.stroke();x.strokeStyle=ARM;x.lineWidth=r*.18;x.stroke();}
+  // propellers
+  const spin=alt>0;for(const[a0,b0]of M){const a=a0*r,b=b0*r;
+    if(spin){x.fillStyle="rgba(40,44,48,.18)";x.beginPath();x.arc(a,b,r*.8,0,7);x.fill();x.strokeStyle="rgba(255,255,255,.3)";x.lineWidth=r*.035;x.stroke();}
+    const sp=tm*(spin?40:0)+(a0>0?.5:-.5)+(b0>0?1.2:0);x.save();x.translate(a,b);x.rotate(sp);x.fillStyle=spin?"rgba(25,28,31,.5)":DARK;
+    for(const s of[1,-1]){x.beginPath();x.ellipse(s*r*.4,0,r*.42,r*.075,s*.08,0,7);x.fill();}x.restore();
+    x.fillStyle=DARK;x.beginPath();x.arc(a,b,r*.15,0,7);x.fill();x.fillStyle="#8c949b";x.beginPath();x.arc(a,b,r*.06,0,7);x.fill();}
   // body
-  x.fillStyle=DK;x.strokeStyle="#0e1012";x.lineWidth=r*.07;rr(x,-r*.42,-r*.6,r*.84,r*1.2,r*.22);x.fill();x.stroke();
-  x.fillStyle=MD;rr(x,-r*.3,-r*.4,r*.6,r*.62,r*.12);x.fill();
-  // battery / top cover vents
-  x.strokeStyle=LT;x.lineWidth=r*.035;for(let i=-1;i<=1;i++){x.beginPath();x.moveTo(-r*.18,r*.3+i*r*.07);x.lineTo(r*.18,r*.3+i*r*.07);x.stroke();}
-  // RTK antennas
-  for(const s of[-1,1]){x.fillStyle="#e9edf0";x.beginPath();x.arc(s*r*.2,-r*.1,r*.1,0,7);x.fill();x.strokeStyle="#0e1012";x.lineWidth=r*.03;x.stroke();}
-  // front gimbal camera
-  x.fillStyle="#15181b";rr(x,-r*.2,-r*.86,r*.4,r*.28,r*.08);x.fill();x.fillStyle="#0b3d66";x.beginPath();x.arc(0,-r*.74,r*.09,0,7);x.fill();x.fillStyle="rgba(255,255,255,.6)";x.beginPath();x.arc(-r*.03,-r*.77,r*.03,0,7);x.fill();
+  x.fillStyle=BODY;x.strokeStyle=EDGE;x.lineWidth=r*.06;x.beginPath();x.moveTo(-r*.26,-r*.62);x.lineTo(r*.26,-r*.62);x.quadraticCurveTo(r*.38,-r*.6,r*.38,-r*.45);x.lineTo(r*.34,r*.62);x.quadraticCurveTo(r*.32,r*.72,r*.2,r*.72);x.lineTo(-r*.2,r*.72);x.quadraticCurveTo(-r*.32,r*.72,-r*.34,r*.62);x.lineTo(-r*.38,-r*.45);x.quadraticCurveTo(-r*.38,-r*.6,-r*.26,-r*.62);x.closePath();x.fill();x.stroke();
+  x.strokeStyle="rgba(90,98,106,.6)";x.lineWidth=r*.03;x.beginPath();x.moveTo(-r*.24,r*.18);x.lineTo(r*.24,r*.18);x.stroke();
+  // top antenna dome
+  x.fillStyle="#dfe3e6";x.beginPath();x.arc(0,r*.38,r*.17,0,7);x.fill();x.strokeStyle=EDGE;x.lineWidth=r*.04;x.stroke();
+  // front camera block
+  x.fillStyle="#2a2e32";rr(x,-r*.26,-r*.92,r*.52,r*.34,r*.08);x.fill();
+  for(const[a,b,s]of[[-r*.11,-r*.76,.08],[r*.11,-r*.76,.06]]){x.fillStyle="#0e2236";x.beginPath();x.arc(a,b,r*s,0,7);x.fill();}
+  x.fillStyle="rgba(255,255,255,.55)";x.beginPath();x.arc(-r*.13,-r*.78,r*.025,0,7);x.fill();
   // nav lights
-  const blink=(Math.floor(tm*2)%2)===0;x.fillStyle=blink?"#30d158":"#145a2a";x.beginPath();x.arc(r*.34,-r*.52,r*.05,0,7);x.fill();x.fillStyle=blink?"#ff453a":"#5a1714";x.beginPath();x.arc(-r*.34,-r*.52,r*.05,0,7);x.fill();
+  const blink=(Math.floor(tm*2)%2)===0;x.fillStyle=blink?"#30d158":"#145a2a";x.beginPath();x.arc(r*.3,-r*.5,r*.045,0,7);x.fill();x.fillStyle=blink?"#ff453a":"#5a1714";x.beginPath();x.arc(-r*.3,-r*.5,r*.045,0,7);x.fill();
   x.restore();}
 
 /* ============ CONFIG — edit coordinates here ============
