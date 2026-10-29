@@ -875,6 +875,13 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .stars .on svg{fill:var(--warn)}
 .badge{width:60px;height:60px;flex:none}
 .cmp{position:relative;width:100%;border-radius:12px;overflow:hidden;touch-action:none}
+.namef{display:grid;gap:6px}
+.namef input{font:inherit;font-size:22px;font-weight:600;color:#fff;background:rgba(255,255,255,.08);border:2px solid var(--line2);border-radius:12px;padding:12px 14px;-webkit-user-select:text;user-select:text;outline:none;width:100%;box-sizing:border-box}
+.namef input:focus{border-color:var(--route)}.namef input.bad{border-color:var(--bad)}
+.namef small{color:var(--bad);font-size:14px}
+.card.wide{width:min(1000px,100%)}
+.cert{width:100%;height:auto;border-radius:12px;display:block}
+a.btn{text-decoration:none}
 .cmp canvas{display:block;width:100%;height:auto;cursor:ew-resize}
 .btnrow{display:flex;gap:8px;flex-wrap:wrap}
 .btnrow .btn{flex:1}
@@ -1032,7 +1039,7 @@ const T={
 en:{step1:"Analyze",st_ana:"Analyze the area",step2:"Plan route",step3:"Process data",
  anaT:"Site analysis",anaHint:"Tap every ? on the map to find out what it is. Some objects are tall, and drones must stay clear of them.",anaLeft:"{n} unknown object(s) left",anaDone:"All obstacles found. Now plan a safe route.",
  nextPlan:"Next: plan the route",unknown:"Unknown object",
- ob_tower:"Telecom tower",ob_crane:"Construction crane",ob_power:"High-voltage power line",ob_heli:"Hospital helipad",ob_sub:"Electricity substation",ob_building:"New building",ob_khor:"Khor bird habitat",ob_palm:"Tall coconut palms",ob_village:"Homes and animals",ob_trees:"Wadi trees",ob_ridge:"Rocky ridge",ob_view:"Viewpoint with visitors",ob_minaret:"Mosque minaret",
+ ob_tower:"Telecom tower",ob_crane:"Construction crane",ob_power:"High-voltage power line",nameL:"Pilot name",namePh:"Type your name",nameNeed:"Please type your name to start.",getCert:"Get my certificate",certKick:"Sky Surveyor · Drone Survey Pilot",certT:"Certificate of Achievement",certThis:"This certificate is proudly presented to",certFor:"for successfully completing the mission",certDate:"Date",certSave:"Save",certDone:"Done",ob_heli:"Hospital helipad",ob_sub:"Electricity substation",ob_building:"New building",ob_khor:"Khor bird habitat",ob_palm:"Tall coconut palms",ob_village:"Homes and animals",ob_trees:"Wadi trees",ob_ridge:"Rocky ridge",ob_view:"Viewpoint with visitors",ob_minaret:"Mosque minaret",
  obH:"{h} m tall",obZone:"No-fly zone",obRule:"Fly at least 30 m above it, or go around.",obRuleZone:"Never fly over it. Always go around.",
  clearAbove:"Clear: {d} m above",mustAvoid:"Too low: go around",avoided:"Avoided",conflict:"Route hits it!",
  cObst:"Route is safe from obstacles ({n} problem(s))",cObstOk:"Route is safe from all obstacles",
@@ -1087,7 +1094,7 @@ en:{step1:"Analyze",st_ana:"Analyze the area",step2:"Plan route",step3:"Process 
 ar:{step1:"تحليل",st_ana:"حلّل المنطقة",step2:"تخطيط المسار",step3:"معالجة البيانات",
  anaT:"تحليل الموقع",anaHint:"المس كل علامة ? على الخريطة لتعرف ما هي. بعض الأجسام عالية، ويجب أن تبتعد عنها الطائرة.",anaLeft:"{n} من الأجسام المجهولة متبقية",anaDone:"وجدت كل العوائق. الآن خطّط مسارًا آمنًا.",
  nextPlan:"التالي: خطّط المسار",unknown:"جسم مجهول",
- ob_tower:"برج اتصالات",ob_crane:"رافعة إنشاءات",ob_power:"خط كهرباء ضغط عالٍ",ob_heli:"مهبط مروحيات المستشفى",ob_sub:"محطة كهرباء فرعية",ob_building:"مبنى جديد",ob_khor:"موطن طيور الخور",ob_palm:"أشجار نارجيل عالية",ob_village:"منازل ومواشٍ",ob_trees:"أشجار الوادي",ob_ridge:"حافة جبلية صخرية",ob_view:"استراحة مطلة فيها زوار",ob_minaret:"مئذنة مسجد",
+ ob_tower:"برج اتصالات",ob_crane:"رافعة إنشاءات",ob_power:"خط كهرباء ضغط عالٍ",nameL:"اسم الطيّار",namePh:"اكتب اسمك",nameNeed:"اكتب اسمك لتبدأ.",getCert:"احصل على شهادتي",certKick:"Sky Surveyor · طيّار مسح بالطائرة المسيّرة",certT:"شهادة إنجاز",certThis:"تُمنح هذه الشهادة بكل فخر إلى",certFor:"لإتمام مهمة",certDate:"التاريخ",certSave:"حفظ",certDone:"تم",ob_heli:"مهبط مروحيات المستشفى",ob_sub:"محطة كهرباء فرعية",ob_building:"مبنى جديد",ob_khor:"موطن طيور الخور",ob_palm:"أشجار نارجيل عالية",ob_village:"منازل ومواشٍ",ob_trees:"أشجار الوادي",ob_ridge:"حافة جبلية صخرية",ob_view:"استراحة مطلة فيها زوار",ob_minaret:"مئذنة مسجد",
  obH:"ارتفاعه {h} م",obZone:"منطقة يُمنع الطيران فيها",obRule:"حلّق أعلى منه بـ 30 م على الأقل، أو التفّ حوله.",obRuleZone:"لا تحلّق فوقها أبدًا. التفّ حولها دائمًا.",
  clearAbove:"آمن: أعلى بـ {d} م",mustAvoid:"منخفض جدًا: التفّ حوله",avoided:"تم تجنّبه",conflict:"المسار يصطدم به!",
  cObst:"المسار آمن من العوائق ({n} مشكلة)",cObstOk:"المسار آمن من كل العوائق",
@@ -1301,11 +1308,31 @@ const FACE={
 function paintFaces(root=document){root.querySelectorAll("[data-face]").forEach(el=>{el.innerHTML=FACE[el.dataset.face];});}
 
 
-function drawDrone(x,cx,cy,r,ang,tm,alt=0){x.save();const so=Math.min(60,alt*.5)+4;x.fillStyle=`rgba(0,0,0,${clamp(.32-alt/400,.08,.32)})`;x.beginPath();x.ellipse(cx+so,cy+so,r*1.3,r*1.3,0,0,7);x.fill();
-  x.translate(cx,cy);x.rotate(ang);x.strokeStyle="#22323e";x.lineWidth=r*.26;x.lineCap="round";x.beginPath();x.moveTo(-r,-r);x.lineTo(r,r);x.moveTo(r,-r);x.lineTo(-r,r);x.stroke();
-  for(const[a,b]of[[-r,-r],[r,-r],[r,r],[-r,r]]){x.fillStyle="rgba(230,240,248,.7)";x.beginPath();x.arc(a,b,r*.7,0,7);x.fill();x.strokeStyle="rgba(34,50,62,.8)";x.lineWidth=r*.09;const sp=tm*(alt>0?40:3)+a;x.beginPath();x.moveTo(a+Math.cos(sp)*r*.68,b+Math.sin(sp)*r*.68);x.lineTo(a-Math.cos(sp)*r*.68,b-Math.sin(sp)*r*.68);x.stroke();}
-  x.fillStyle="#ffffff";x.strokeStyle="#22323e";x.lineWidth=r*.13;rr(x,-r*.5,-r*.68,r,r*1.36,r*.32);x.fill();x.stroke();
-  x.fillStyle="#e5484d";x.beginPath();x.moveTo(0,-r*.95);x.lineTo(r*.22,-r*.62);x.lineTo(-r*.22,-r*.62);x.closePath();x.fill();x.fillStyle="#1f7ae0";x.beginPath();x.arc(0,-r*.25,r*.18,0,7);x.fill();x.restore();}
+/* industrial survey quadcopter (large X-frame, folding arms, RTK antennas, front gimbal camera) — top view */
+function drawDrone(x,cx,cy,r,ang,tm,alt=0){x.save();
+  const so=Math.min(60,alt*.5)+4;x.fillStyle=`rgba(0,0,0,${clamp(.32-alt/400,.08,.32)})`;x.beginPath();x.ellipse(cx+so,cy+so,r*1.45,r*1.45,0,0,7);x.fill();
+  x.translate(cx,cy);x.rotate(ang);const DK="#2a2e33",MD="#3d434a",LT="#5b636c";
+  // arms
+  x.lineCap="round";for(const[a,b]of[[-1,-1],[1,-1],[1,1],[-1,1]]){x.strokeStyle="#15181b";x.lineWidth=r*.34;x.beginPath();x.moveTo(a*r*.25,b*r*.25);x.lineTo(a*r,b*r);x.stroke();x.strokeStyle=MD;x.lineWidth=r*.22;x.stroke();
+    x.fillStyle="#cfd5db";x.beginPath();x.arc(a*r*.52,b*r*.52,r*.06,0,7);x.fill();}
+  // propellers (2-blade, blurred when spinning)
+  const spin=alt>0;for(const[a,b]of[[-r,-r],[r,-r],[r,r],[-r,r]]){
+    if(spin){x.fillStyle="rgba(210,218,226,.28)";x.beginPath();x.arc(a,b,r*.82,0,7);x.fill();x.strokeStyle="rgba(255,255,255,.35)";x.lineWidth=r*.04;x.stroke();}
+    const sp=tm*(spin?40:0)+(a>0?.6:-.4)+(b>0?1:0);x.save();x.translate(a,b);x.rotate(sp);x.fillStyle=spin?"rgba(30,34,38,.55)":"#1b1e21";
+    for(const s of[1,-1]){x.beginPath();x.ellipse(s*r*.4,0,r*.42,r*.09,0,0,7);x.fill();}x.restore();
+    x.fillStyle=DK;x.beginPath();x.arc(a,b,r*.17,0,7);x.fill();x.strokeStyle=LT;x.lineWidth=r*.05;x.stroke();x.fillStyle="#9aa3ab";x.beginPath();x.arc(a,b,r*.06,0,7);x.fill();}
+  // body
+  x.fillStyle=DK;x.strokeStyle="#0e1012";x.lineWidth=r*.07;rr(x,-r*.42,-r*.6,r*.84,r*1.2,r*.22);x.fill();x.stroke();
+  x.fillStyle=MD;rr(x,-r*.3,-r*.4,r*.6,r*.62,r*.12);x.fill();
+  // battery / top cover vents
+  x.strokeStyle=LT;x.lineWidth=r*.035;for(let i=-1;i<=1;i++){x.beginPath();x.moveTo(-r*.18,r*.3+i*r*.07);x.lineTo(r*.18,r*.3+i*r*.07);x.stroke();}
+  // RTK antennas
+  for(const s of[-1,1]){x.fillStyle="#e9edf0";x.beginPath();x.arc(s*r*.2,-r*.1,r*.1,0,7);x.fill();x.strokeStyle="#0e1012";x.lineWidth=r*.03;x.stroke();}
+  // front gimbal camera
+  x.fillStyle="#15181b";rr(x,-r*.2,-r*.86,r*.4,r*.28,r*.08);x.fill();x.fillStyle="#0b3d66";x.beginPath();x.arc(0,-r*.74,r*.09,0,7);x.fill();x.fillStyle="rgba(255,255,255,.6)";x.beginPath();x.arc(-r*.03,-r*.77,r*.03,0,7);x.fill();
+  // nav lights
+  const blink=(Math.floor(tm*2)%2)===0;x.fillStyle=blink?"#30d158":"#145a2a";x.beginPath();x.arc(r*.34,-r*.52,r*.05,0,7);x.fill();x.fillStyle=blink?"#ff453a":"#5a1714";x.beginPath();x.arc(-r*.34,-r*.52,r*.05,0,7);x.fill();
+  x.restore();}
 
 /* ============ CONFIG — edit coordinates here ============
    Positions are metres from each mission's origin (its home point): x = east, y = south (negative y = north). */
@@ -1437,7 +1464,7 @@ function renderHome(){$("#homeTitle").innerHTML=t("homeTitle");
   $("#mlist").innerHTML=ORDER.map(k=>{const m=MIS[k];return`<button class="mrow" data-k="${k}"><span class="tile" style="background:${m.tint};color:${m.tc}">${ico(m.icon)}</span><span style="min-width:0"><b>${t(m.title)}</b><span class="d">${t(m.desc)}</span><span class="meta">${m.tags.map(g=>`<span class="tag">${t(g)}</span>`).join("")}<span class="tag">${ico("timer")}${t("min3")}</span></span></span><span class="go">${ico("play")}</span></button>`;}).join("");
   document.querySelectorAll(".mrow").forEach(b=>b.onclick=()=>{beep("ok");startMission(b.dataset.k);});}
 function showUI(mode){$("#home").hidden=mode!=="home";$("#topbar").hidden=mode==="home";$("#comms").hidden=mode==="home";$("#rail").hidden=$("#route").hidden=mode!=="plan";$("#fv").hidden=mode!=="fly";if(mode==="fly")sizeCv();}
-function goHome(){closeModal();SIM.phase="home";SIM.key=null;S.screen="home";attrPos();showUI("home");ov.classList.remove("edit");map.dragging.enable();map.touchZoom.enable();map.scrollWheelZoom.enable();
+function goHome(){closeModal();SIM.player="";SIM.phase="home";SIM.key=null;S.screen="home";attrPos();showUI("home");ov.classList.remove("edit");map.dragging.enable();map.touchZoom.enable();map.scrollWheelZoom.enable();
   if(MODE==="sim")simHome();else map.setView(CONFIG.homeView.center,CONFIG.homeView.zoom,{animate:false});motorSound(false);}
 
 /* ============ mission ============ */
@@ -1456,13 +1483,15 @@ function fitRegion(){const G=SIM.G,[x0,y0,x1,y1]=G.region;const b=L.latLngBounds
   map.fitBounds(b,{paddingTopLeft:[f.x0+10,f.y0+70],paddingBottomRight:[OW-f.x1+10,OH-f.y1+16],animate:false});}
 function speak(who,key,p){SIM.feed.push({who,key,p});if(SIM.feed.length>2)SIM.feed.shift();renderFeed(true);beep("talk");}
 function renderFeed(anim){$("#comms").innerHTML=SIM.feed.map((m,i)=>`<div class="msg ${i<SIM.feed.length-1?"old":""}" style="${anim&&i===SIM.feed.length-1?"":"animation:none"}"><span class="av">${FACE[m.who]}</span><div><b>${t(m.who==="ah"?"ahName":"maName")}</b><p>${t(m.key,m.p)}</p></div></div>`).join("");}
-function modal(fn){SIM.modalFn=fn;$("#modal").hidden=false;fn();}
+function modal(fn){SIM.modalFn=fn;$("#card").classList.remove("wide");$("#modal").hidden=false;fn();}
 function closeModal(){$("#modal").hidden=true;SIM.modalFn=null;}
 function showBrief(){const m=SIM.mis;modal(()=>{$("#card").innerHTML=`<span class="kick">${m.tags.map(g=>t(g)).join(" · ")}</span><h2>${t(m.title)}</h2>`+
   m.intro.map(([w,k])=>`<div class="msg"><span class="av">${FACE[w]}</span><div><b>${t(w==="ah"?"ahName":"maName")}</b><p>${t(k)}</p></div></div>`).join("")+
   `<div class="steps3">${[["how1","how1d"],["how2","how2d"],["how3","how3d"]].map((h,i)=>`<div><b><span class="n">${i+1}</span>${t(h[0])}</b>${t(h[1])}</div>`).join("")}</div>
+  <label class="namef"><span class="kick">${t("nameL")}</span><input id="pName" type="text" maxlength="28" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="${t("namePh")}" value="${(SIM.player||"").replace(/"/g,"&quot;")}"><small id="nameErr" hidden>${t("nameNeed")}</small></label>
   <div class="btnrow"><button class="btn dark" id="bExit">${ico("x")}${t("exit")}</button><button class="btn go lg" id="bGo">${ico("route")}${t("briefBegin")}</button></div>`;
-  $("#bGo").onclick=()=>{closeModal();SIM.feed=[];setPhase("analyze");beep("ok");};$("#bExit").onclick=goHome;});}
+  const pn=$("#pName");pn.oninput=()=>{SIM.player=pn.value;$("#nameErr").hidden=true;pn.classList.remove("bad");};pn.onkeydown=e=>{if(e.key==="Enter")$("#bGo").click();};
+  $("#bGo").onclick=()=>{const nm=pn.value.trim();if(!nm){$("#nameErr").hidden=false;pn.classList.add("bad");pn.focus();beep("bad");return;}SIM.player=nm;pn.blur();closeModal();SIM.feed=[];setPhase("analyze");beep("ok");};$("#bExit").onclick=goHome;});}
 function gsd(H){return(H*17.3/(12.29*5280)*100).toFixed(1);}
 function status(){const f=SIM.fly;if(SIM.phase==="analyze")return["st_ana","warn"];if(SIM.phase==="fly")return f&&f.L-f.dist<200?["st_rth","info"]:["st_fly","ok"];if(SIM.phase==="done")return["st_done","info"];return allOk()?["st_ready","ok"]:["st_plan","warn"];}
 function chips(el,vals,cur,lab,fn,cls=""){el.innerHTML=vals.map((v,i)=>`<button class="alt ${cls} ${lab&&lab[i]&&lab[i][1]?"warn":""}" data-v="${v}" aria-pressed="${cur===v}" ${SIM.phase!=="plan"?"disabled":""}><span class="v">${v}${cls?"":" m"}</span>${lab?`<span class="c">${t(lab[i][0])}</span>`:""}</button>`).join("");
@@ -1625,8 +1654,8 @@ function report(skipped){const f=SIM.fly||{},k=SIM.key,m=SIM.mis;let ok=skipped,
    ${ok&&k==="road"?dmgHTML():(!ok&&SIM.photos.length?`<div class="shots">${SIM.photos.slice(-5).map(u=>`<img alt="" src="${u}">`).join("")}</div>`:"")}
    ${ok?`<div class="msg"><span class="av">${FACE.ma}</span><div><b>${t("maName")}</b><p>${t("win_"+k)}</p></div></div><div class="msg"><span class="av">${FACE.ah}</span><div><b>${t("ahName")}</b><p>${t("win_ah")}</p></div></div>`:
      `<div class="msg"><span class="av">${FACE.ah}</span><div><b>${t("ahName")}</b><p>${t(key,p)}</p></div></div>`}
-   <div class="btnrow">${ok?`<button class="btn go lg" id="rFin">${ico("check")}${t("finish")}</button>`:`<button class="btn dark" id="rExit">${t("exit")}</button><button class="btn dark" id="rNew">${ico("reset")}${t("restart")}</button><button class="btn go lg" id="rEdit">${ico("route")}${t("edit")}</button>`}</div>`;
-   if(ok){$("#rFin").onclick=goHome;if(k!=="road")buildProduct();}else{$("#rExit").onclick=goHome;$("#rNew").onclick=()=>{closeModal();resetPlan(false);fitRegion();setPhase("analyze");};$("#rEdit").onclick=()=>{closeModal();resetPlan(true);fitRegion();setPhase("plan");};}});}
+   <div class="btnrow">${ok?`<button class="btn go lg" id="rFin">${ico("check")}${t("getCert")}</button>`:`<button class="btn dark" id="rExit">${t("exit")}</button><button class="btn dark" id="rNew">${ico("reset")}${t("restart")}</button><button class="btn go lg" id="rEdit">${ico("route")}${t("edit")}</button>`}</div>`;
+   if(ok){SIM.cert={stars,dist:f.dist||0,photos:SIM.shots,res};$("#rFin").onclick=showCert;if(k!=="road")buildProduct();}else{$("#rExit").onclick=goHome;$("#rNew").onclick=()=>{closeModal();resetPlan(false);fitRegion();setPhase("analyze");};$("#rEdit").onclick=()=>{closeModal();resetPlan(true);fitRegion();setPhase("plan");};}});}
 function buildProduct(){const k=SIM.key;const box=$("#cmpBox");if(!box)return;
   const use=(nw,old)=>{if(!nw){box.remove();return;}if(!$("#cmpBox"))return;
     if(k==="map")mountSlider($("#cmpBox"),blurOld(nw,old),nw,t("old"),t("neu"));
@@ -1634,6 +1663,40 @@ function buildProduct(){const k=SIM.key;const box=$("#cmpBox");if(!box)return;
       const lg=$("#ndviLeg");if(lg)lg.innerHTML=[["#28964a","healthy",r.healthy+"%"],["#f4d250","stressed",r.stressed+"%"],["#c43e2e","bare",""]].map(([c,l,v])=>`<span style="display:flex;gap:6px;align-items:center"><i style="width:12px;height:12px;border-radius:3px;background:${c};display:inline-block"></i>${t(l)} ${v}</span>`).join("");}};
   if(SIM.product){use(...SIM.product);return;}captureArea((nw,old)=>{SIM.product=[nw,old];use(nw,old);});}
 function dmgHTML(){const G=SIM.G;return`<div class="dmg">${G.spots.map((sp,j)=>{const ll=m2ll(G.O,sp[0],sp[1]);return`<div>${SIM.dmg&&SIM.dmg[j]?`<img alt="" src="${SIM.dmg[j]}">`:""}<b>${t("dmg"+j)}</b><small>${ll[0].toFixed(5)}° N, ${ll[1].toFixed(5)}° E</small></div>`;}).join("")}</div>`;}
+/* ============ certificate ============ */
+function svgImg(svg){return new Promise(res=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>res(null);i.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg.includes("xmlns")?svg:svg.replace("<svg",'<svg xmlns="http://www.w3.org/2000/svg"'));});}
+async function certCanvas(){const W=1600,H=1130,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");const ar=S.lang==="ar";const C=SIM.cert||{stars:3};
+  try{await document.fonts.ready;}catch(_){}
+  const F=(w,sz)=>`${w} ${sz}px ${ar?'"IBM Plex Sans Arabic",':''}"Barlow","IBM Plex Sans Arabic",sans-serif`;
+  x.direction=ar?"rtl":"ltr";
+  // background + borders
+  const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,"#0f1c17");g.addColorStop(1,"#0b1220");x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.strokeStyle="#2fe0a8";x.lineWidth=6;x.strokeRect(36,36,W-72,H-72);x.strokeStyle="rgba(47,224,168,.35)";x.lineWidth=2;x.strokeRect(54,54,W-108,H-108);
+  // faint flight-line pattern
+  x.save();x.globalAlpha=.07;x.strokeStyle="#2fe0a8";x.lineWidth=3;for(let i=0;i<9;i++){const y=150+i*100;x.beginPath();x.moveTo(110,y);x.lineTo(W-110,y);x.stroke();}x.restore();
+  for(const[px,py]of[[54,54],[W-54,54],[54,H-54],[W-54,H-54]]){x.fillStyle="#ffcc00";x.beginPath();x.arc(px,py,9,0,7);x.fill();}
+  const logo=await svgImg(MARK);if(logo){x.fillStyle="#fff";x.beginPath();x.roundRect?x.roundRect(W/2-52,96,104,104,24):x.rect(W/2-52,96,104,104);x.fill();x.drawImage(logo,W/2-40,108,80,80);}
+  x.textAlign="center";x.fillStyle="#2fe0a8";x.font=F(700,30);x.fillText(t("certKick"),W/2,248);
+  x.fillStyle="#fff";x.font=F(700,82);x.fillText(t("certT"),W/2,340);
+  x.fillStyle="rgba(235,235,245,.7)";x.font=F(500,32);x.fillText(t("certThis"),W/2,420);
+  // name (shrink to fit)
+  const nm=(SIM.player||"").trim()||"—";let fs=110;do{x.font=F(700,fs);fs-=4;}while(x.measureText(nm).width>W-320&&fs>40);
+  x.fillStyle="#ffcc00";x.fillText(nm,W/2,540);x.strokeStyle="rgba(255,204,0,.5)";x.lineWidth=3;x.beginPath();x.moveTo(W/2-420,572);x.lineTo(W/2+420,572);x.stroke();
+  x.fillStyle="rgba(235,235,245,.75)";x.font=F(500,32);x.fillText(t("certFor"),W/2,640);
+  x.fillStyle="#fff";x.font=F(700,52);x.fillText(t(SIM.mis.title),W/2,710);
+  // stars
+  for(let i=0;i<3;i++){const sx=W/2+(i-1)*70,sy=780;x.fillStyle=i<C.stars?"#ffcc00":"rgba(255,255,255,.18)";x.beginPath();for(let k=0;k<10;k++){const a=-Math.PI/2+k*Math.PI/5,rr=k%2?13:30;x.lineTo(sx+Math.cos(a)*rr,sy+Math.sin(a)*rr);}x.closePath();x.fill();}
+  // stats
+  const stats=[[t("rDist"),((C.dist||0)/1000).toFixed(2)+" km"],[t("rPhotos"),String(C.photos||0)],[t("certDate"),new Date().toLocaleDateString(ar?"ar-OM":"en-GB",{day:"numeric",month:"long",year:"numeric"})]];
+  stats.forEach((s,i)=>{const sx=W/2+(i-1)*330;x.fillStyle="rgba(235,235,245,.55)";x.font=F(600,24);x.fillText(s[0],sx,868);x.fillStyle="#fff";x.font=F(700,36);x.fillText(s[1],sx,912);});
+  // signatures
+  const faces=[await svgImg(FACE.ma),await svgImg(FACE.ah)];[["maName","maRole"],["ahName","ahRole"]].forEach((p,i)=>{const sx=i===0?(ar?W-330:330):(ar?330:W-330),sy=990;
+    if(faces[i])x.drawImage(faces[i],sx-160,sy-46,76,76);x.textAlign=ar?"right":"left";const tx=ar?sx+60:sx-70;x.fillStyle="#fff";x.font=F(700,30);x.fillText(t(p[0]),tx,sy-6);x.fillStyle="rgba(235,235,245,.6)";x.font=F(500,24);x.fillText(t(p[1]),tx,sy+26);x.textAlign="center";});
+  return c;}
+async function showCert(){const c=await certCanvas();const url=c.toDataURL("image/png");SIM.certURL=url;
+  modal(()=>{$("#card").classList.add("wide");$("#card").innerHTML=`<img class="cert" alt="${t("certT")}" src="${SIM.certURL}">
+   <div class="btnrow"><a class="btn dark" id="cSave" download="sky-surveyor-certificate.png" href="${SIM.certURL}">${ico("check")}${t("certSave")}</a><button class="btn go lg" id="cDone">${t("certDone")}</button></div>`;
+   $("#cDone").onclick=()=>{$("#card").classList.remove("wide");goHome();};});beep("win");}
 function badge(ok){return`<svg class="badge" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 3l24 9v18c0 15-10 26-24 31C18 56 8 45 8 30V12z" fill="${ok?"#1fc36b":"#3a3a3c"}"/><g transform="translate(32 30)" stroke="${ok?"#00150a":"#fff"}" stroke-width="2.6" stroke-linecap="round" fill="none"><path d="M-8-6L8 6M8-6L-8 6"/><circle cx="-9" cy="-7" r="4"/><circle cx="9" cy="-7" r="4"/><circle cx="9" cy="7" r="4"/><circle cx="-9" cy="7" r="4"/></g></svg>`;}
 
 /* ============ render ============ */
@@ -1695,7 +1758,7 @@ function render(tm,dt){const x=ox;x.clearRect(0,0,OW,OH);if(!MODE)return;
   const[dx,dy]=v.P(d.x,d.y);
   if(flying){x.save();x.strokeStyle="rgba(255,255,255,.22)";x.lineWidth=1;for(const f of[1/3,2/3]){x.beginPath();x.moveTo(OW*f,0);x.lineTo(OW*f,OH);x.stroke();x.beginPath();x.moveTo(0,OH*f);x.lineTo(OW,OH*f);x.stroke();}
     const fw=fwOf(Math.max(d.z,1)),fh=fw*ASPECT;x.translate(dx,dy);x.rotate(d.yaw);const W2=fw*v.s/2,H2=fh*v.s/2,c=Math.min(W2,H2)*.25;x.strokeStyle="rgba(255,255,255,.95)";x.lineWidth=2;
-    for(const[sx,sy]of[[-1,-1],[1,-1],[1,1],[-1,1]]){x.beginPath();x.moveTo(sx*W2,sy*H2-sy*c);x.lineTo(sx*W2,sy*H2);x.lineTo(sx*W2-sx*c,sy*H2);x.stroke();}x.restore();drawDrone(x,dx,dy,18,d.yaw,tm,d.z);}
+    for(const[sx,sy]of[[-1,-1],[1,-1],[1,1],[-1,1]]){x.beginPath();x.moveTo(sx*W2,sy*H2-sy*c);x.lineTo(sx*W2,sy*H2);x.lineTo(sx*W2-sx*c,sy*H2);x.stroke();}x.restore();drawDrone(x,dx,dy,28,d.yaw,tm,d.z);}
   else if(SIM.phase!=="done")drawDrone(x,dx+26,dy-26,12,0,tm,0);
   if(SIM.flash>0){x.fillStyle=`rgba(255,255,255,${SIM.flash*.6})`;x.fillRect(0,0,OW,OH);SIM.flash=Math.max(0,SIM.flash-dt*3);}
   if(flying){tele();if(mini){mx.clearRect(0,0,mo._w,mo._h);const mv=viewOf(G.O,mini);if(MODE==="sim"){const c=mv.inv(mo._w/2,mo._h/2);drawWorld(mx,{cx:c[0],cy:c[1],s:mv.s,w:mo._w,h:mo._h},{tm});}
