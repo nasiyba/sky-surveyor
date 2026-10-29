@@ -1039,7 +1039,7 @@ const T={
 en:{step1:"Analyze",st_ana:"Analyze the area",step2:"Plan route",step3:"Process data",
  anaT:"Site analysis",anaHint:"Tap every ? on the map to find out what it is. Some objects are tall, and drones must stay clear of them.",anaLeft:"{n} unknown object(s) left",anaDone:"All obstacles found. Now plan a safe route.",
  nextPlan:"Next: plan the route",unknown:"Unknown object",
- ob_tower:"Telecom tower",ob_crane:"Construction crane",ob_power:"High-voltage power line",nameL:"Pilot name",namePh:"Type your name",nameNeed:"Please type your name to start.",getCert:"Get my certificate",certKick:"Sky Surveyor · Drone Survey Pilot",certT:"Certificate of Achievement",certThis:"This certificate is proudly presented to",certFor:"for successfully completing the mission",certDate:"Date",certSave:"Save",certDone:"Done",ob_heli:"Hospital helipad",ob_sub:"Electricity substation",ob_building:"New building",ob_khor:"Khor bird habitat",ob_palm:"Tall coconut palms",ob_village:"Homes and animals",ob_trees:"Wadi trees",ob_ridge:"Rocky ridge",ob_view:"Viewpoint with visitors",ob_minaret:"Mosque minaret",
+ ob_tower:"Telecom tower",ob_crane:"Construction crane",ob_power:"High-voltage power line",nameL:"Pilot name",namePh:"Type your name",nameNeed:"Please type your name to start.",getCert:"Get my certificate",certKick:"Sky Surveyor · Drone Survey Pilot",certT:"Certificate of Achievement",certThis:"This certificate is proudly presented to",certFor:"for successfully completing a drone survey mission",certDate:"Date",certSave:"Save",certDone:"Done",ob_heli:"Hospital helipad",ob_sub:"Electricity substation",ob_building:"New building",ob_khor:"Khor bird habitat",ob_palm:"Tall coconut palms",ob_village:"Homes and animals",ob_trees:"Wadi trees",ob_ridge:"Rocky ridge",ob_view:"Viewpoint with visitors",ob_minaret:"Mosque minaret",
  obH:"{h} m tall",obZone:"No-fly zone",obRule:"Fly at least 30 m above it, or go around.",obRuleZone:"Never fly over it. Always go around.",
  clearAbove:"Clear: {d} m above",mustAvoid:"Too low: go around",avoided:"Avoided",conflict:"Route hits it!",
  cObst:"Route is safe from obstacles ({n} problem(s))",cObstOk:"Route is safe from all obstacles",
@@ -1094,7 +1094,7 @@ en:{step1:"Analyze",st_ana:"Analyze the area",step2:"Plan route",step3:"Process 
 ar:{step1:"تحليل",st_ana:"حلّل المنطقة",step2:"تخطيط المسار",step3:"معالجة البيانات",
  anaT:"تحليل الموقع",anaHint:"المس كل علامة ? على الخريطة لتعرف ما هي. بعض الأجسام عالية، ويجب أن تبتعد عنها الطائرة.",anaLeft:"{n} من الأجسام المجهولة متبقية",anaDone:"وجدت كل العوائق. الآن خطّط مسارًا آمنًا.",
  nextPlan:"التالي: خطّط المسار",unknown:"جسم مجهول",
- ob_tower:"برج اتصالات",ob_crane:"رافعة إنشاءات",ob_power:"خط كهرباء ضغط عالٍ",nameL:"اسم الطيّار",namePh:"اكتب اسمك",nameNeed:"اكتب اسمك لتبدأ.",getCert:"احصل على شهادتي",certKick:"Sky Surveyor · طيّار مسح بالطائرة المسيّرة",certT:"شهادة إنجاز",certThis:"تُمنح هذه الشهادة بكل فخر إلى",certFor:"لإتمام مهمة",certDate:"التاريخ",certSave:"حفظ",certDone:"تم",ob_heli:"مهبط مروحيات المستشفى",ob_sub:"محطة كهرباء فرعية",ob_building:"مبنى جديد",ob_khor:"موطن طيور الخور",ob_palm:"أشجار نارجيل عالية",ob_village:"منازل ومواشٍ",ob_trees:"أشجار الوادي",ob_ridge:"حافة جبلية صخرية",ob_view:"استراحة مطلة فيها زوار",ob_minaret:"مئذنة مسجد",
+ ob_tower:"برج اتصالات",ob_crane:"رافعة إنشاءات",ob_power:"خط كهرباء ضغط عالٍ",nameL:"اسم الطيّار",namePh:"اكتب اسمك",nameNeed:"اكتب اسمك لتبدأ.",getCert:"احصل على شهادتي",certKick:"Sky Surveyor · طيّار مسح بالطائرة المسيّرة",certT:"شهادة إنجاز",certThis:"تُمنح هذه الشهادة بكل فخر إلى",certFor:"لإتمامه مهمة مسح بالطائرة المسيّرة بنجاح",certDate:"التاريخ",certSave:"حفظ",certDone:"تم",ob_heli:"مهبط مروحيات المستشفى",ob_sub:"محطة كهرباء فرعية",ob_building:"مبنى جديد",ob_khor:"موطن طيور الخور",ob_palm:"أشجار نارجيل عالية",ob_village:"منازل ومواشٍ",ob_trees:"أشجار الوادي",ob_ridge:"حافة جبلية صخرية",ob_view:"استراحة مطلة فيها زوار",ob_minaret:"مئذنة مسجد",
  obH:"ارتفاعه {h} م",obZone:"منطقة يُمنع الطيران فيها",obRule:"حلّق أعلى منه بـ 30 م على الأقل، أو التفّ حوله.",obRuleZone:"لا تحلّق فوقها أبدًا. التفّ حولها دائمًا.",
  clearAbove:"آمن: أعلى بـ {d} م",mustAvoid:"منخفض جدًا: التفّ حوله",avoided:"تم تجنّبه",conflict:"المسار يصطدم به!",
  cObst:"المسار آمن من العوائق ({n} مشكلة)",cObstOk:"المسار آمن من كل العوائق",
@@ -1682,16 +1682,16 @@ async function certCanvas(){const W=1600,H=1130,c=document.createElement("canvas
   // name (shrink to fit)
   const nm=(SIM.player||"").trim()||"—";let fs=110;do{x.font=F(700,fs);fs-=4;}while(x.measureText(nm).width>W-320&&fs>40);
   x.fillStyle="#ffcc00";x.fillText(nm,W/2,540);x.strokeStyle="rgba(255,204,0,.5)";x.lineWidth=3;x.beginPath();x.moveTo(W/2-420,572);x.lineTo(W/2+420,572);x.stroke();
-  x.fillStyle="rgba(235,235,245,.75)";x.font=F(500,32);x.fillText(t("certFor"),W/2,640);
-  x.fillStyle="#fff";x.font=F(700,52);x.fillText(t(SIM.mis.title),W/2,710);
+  x.fillStyle="rgba(235,235,245,.75)";x.font=F(500,32);x.fillText(t("certFor"),W/2,650);
+  
   // stars
-  for(let i=0;i<3;i++){const sx=W/2+(i-1)*70,sy=780;x.fillStyle=i<C.stars?"#ffcc00":"rgba(255,255,255,.18)";x.beginPath();for(let k=0;k<10;k++){const a=-Math.PI/2+k*Math.PI/5,rr=k%2?13:30;x.lineTo(sx+Math.cos(a)*rr,sy+Math.sin(a)*rr);}x.closePath();x.fill();}
+  for(let i=0;i<3;i++){const sx=W/2+(i-1)*70,sy=750;x.fillStyle=i<C.stars?"#ffcc00":"rgba(255,255,255,.18)";x.beginPath();for(let k=0;k<10;k++){const a=-Math.PI/2+k*Math.PI/5,rr=k%2?13:30;x.lineTo(sx+Math.cos(a)*rr,sy+Math.sin(a)*rr);}x.closePath();x.fill();}
   // stats
-  const stats=[[t("rDist"),((C.dist||0)/1000).toFixed(2)+" km"],[t("rPhotos"),String(C.photos||0)],[t("certDate"),new Date().toLocaleDateString(ar?"ar-OM":"en-GB",{day:"numeric",month:"long",year:"numeric"})]];
+  const stats=[[t("rDist"),((C.dist||0)/1000).toFixed(2)+(ar?" كم":" km")],[t("rPhotos"),String(C.photos||0)],[t("certDate"),new Date().toLocaleDateString(ar?"ar-OM":"en-GB",{day:"numeric",month:"long",year:"numeric"})]];
   stats.forEach((s,i)=>{const sx=W/2+(i-1)*330;x.fillStyle="rgba(235,235,245,.55)";x.font=F(600,24);x.fillText(s[0],sx,868);x.fillStyle="#fff";x.font=F(700,36);x.fillText(s[1],sx,912);});
   // signatures
   const faces=[await svgImg(FACE.ma),await svgImg(FACE.ah)];[["maName","maRole"],["ahName","ahRole"]].forEach((p,i)=>{const sx=i===0?(ar?W-330:330):(ar?330:W-330),sy=990;
-    if(faces[i])x.drawImage(faces[i],sx-160,sy-46,76,76);x.textAlign=ar?"right":"left";const tx=ar?sx+60:sx-70;x.fillStyle="#fff";x.font=F(700,30);x.fillText(t(p[0]),tx,sy-6);x.fillStyle="rgba(235,235,245,.6)";x.font=F(500,24);x.fillText(t(p[1]),tx,sy+26);x.textAlign="center";});
+    if(faces[i])x.drawImage(faces[i],ar?sx+84:sx-160,sy-46,76,76);x.textAlign=ar?"right":"left";const tx=ar?sx+70:sx-70;x.fillStyle="#fff";x.font=F(700,30);x.fillText(t(p[0]),tx,sy-6);x.fillStyle="rgba(235,235,245,.6)";x.font=F(500,24);x.fillText(t(p[1]),tx,sy+26);x.textAlign="center";});
   return c;}
 async function showCert(){const c=await certCanvas();const url=c.toDataURL("image/png");SIM.certURL=url;
   modal(()=>{$("#card").classList.add("wide");$("#card").innerHTML=`<img class="cert" alt="${t("certT")}" src="${SIM.certURL}">
