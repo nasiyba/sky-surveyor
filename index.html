@@ -1070,7 +1070,7 @@ en:{step1:"Analyze",st_ana:"Analyze the area",step2:"Plan route",step3:"Process 
  o60:"Gaps",o70:"Good",o80:"Extra",
  search:"",report:"Report",target:"Survey area",farm:"Farm",home:"Home point",
  briefBegin:"Set up the flight",how1:"Shape the route",how1d:"Drag the handles on the map.",how2:"Set the camera",how2d:"Choose altitude and overlap.",how3:"Press GO",how3d:"The drone flies the route by itself.",
- m1:"A new neighbourhood was built here, but our map still shows empty land. Let's make an orthomosaic: one big, sharp photo map.",
+ m1:"A new neighbourhood was built here, but our map still shows empty land. Let's make an orthomosaic: one big, sharp photo map. We are close to Salalah Airport, so we got a flight permit from the Civil Aviation Authority first.",
  m2:"Drag the corners of the flight area over the yellow zone and I'll calculate the flight lines. Use 70% overlap so the photos can be stitched.",
  f1:"The Ministry of Agriculture asked us to check the palms on this farm. Our multispectral camera can see which trees are stressed.",
  f2:"Cover the whole farm with the flight area. Fly at 100 m or lower so every tree is clear.",
@@ -1125,7 +1125,7 @@ ar:{step1:"تحليل",st_ana:"حلّل المنطقة",step2:"تخطيط الم
  o60:"فجوات",o70:"جيد",o80:"إضافي",
  search:"",report:"بلاغ",target:"منطقة المسح",farm:"المزرعة",home:"نقطة الإقلاع",
  briefBegin:"جهّز الرحلة",how1:"شكّل المسار",how1d:"اسحب المقابض على الخريطة.",how2:"اضبط الكاميرا",how2d:"اختر الارتفاع والتداخل.",how3:"اضغط انطلق",how3d:"ستطير الطائرة المسار وحدها.",
- m1:"بُني حي جديد هنا، لكن خريطتنا ما زالت تُظهر أرضًا فارغة. لنصنع صورة جوية مصحّحة: خريطة صور واحدة كبيرة وواضحة.",
+ m1:"بُني حي جديد هنا، لكن خريطتنا ما زالت تُظهر أرضًا فارغة. لنصنع صورة جوية مصحّحة: خريطة صور واحدة كبيرة وواضحة. نحن قريبون من مطار صلالة، لذلك حصلنا أولًا على تصريح طيران من هيئة الطيران المدني.",
  m2:"اسحب زوايا منطقة الطيران فوق المنطقة الصفراء وسأحسب خطوط الطيران. استخدم تداخل 70% لتلتحم الصور.",
  f1:"طلبت منا وزارة الزراعة فحص النخيل في هذه المزرعة. كاميرتنا متعددة الأطياف ترى الأشجار المجهدة.",
  f2:"غطِّ المزرعة كلها بمنطقة الطيران. حلّق على 100 م أو أقل لتظهر كل شجرة بوضوح.",
@@ -1346,7 +1346,7 @@ const CONFIG={
     // Banana and coconut plantations by the khor (lagoon), west Salalah
     farm:{O:[16.99829,54.06995],home:[79,-193],area:{x:140,y:-295,w:405,h:275},obst:[{type:"khor",c:[479,97],r:170},{type:"palm",c:[330,-114],h:25,r:35},{type:"palm",c:[219,-249],h:25,r:35}]},
     // Mughsail mountain road (west of Mughsail): a rocky ridge beside the road and a roadside viewpoint where visitors stop
-    road:{O:[16.87667,53.75565],nz:18,home:[0,0],spots:[[-309,-224],[-1257,-528],[-1742,-393]],obst:[{type:"ridge",c:[-784,-454],h:70,r:110},{type:"view",c:[-1143,-350],r:60}]}
+    road:{O:[16.87667,53.75565],nz:18,kinds:[1,0,2],home:[0,0],spots:[[-309,-224],[-1257,-528],[-1742,-393]],obst:[{type:"ridge",c:[-784,-454],h:70,r:110},{type:"view",c:[-1143,-350],r:60}]}
   },
   sim:{
     map:{home:[1500,1010]},
@@ -1358,7 +1358,7 @@ const CONFIG={
 const MIS={
   map:{type:"area",title:"mapT",desc:"mapD",tags:["tArea","tOrtho"],icon:"map",tint:"rgba(47,224,168,.14)",tc:"#2fe0a8",lead:"ma",heights:[60,120,200],ak:["a60","a120","a200"],batt:7,checks:["cover","obst","overlap","legal","batt"],intro:[["ma","m1"],["ah","m2"]],tip:["ah","m3"]},
   farm:{type:"area",title:"farmT",desc:"farmD",tags:["tArea","tNdvi"],icon:"leaf",tint:"rgba(255,204,0,.14)",tc:"#ffcc00",lead:"ma",heights:[60,100,150],ak:["a60","a100","a150"],batt:7,checks:["cover","obst","overlap","gsd","legal","batt"],intro:[["ma","f1"],["ah","f2"]],tip:["ah","f3"]},
-  road:{type:"corr",title:"roadT",desc:"roadD",tags:["tCorr","tInsp"],icon:"alert",tint:"rgba(255,69,58,.14)",tc:"#ff6b61",lead:"ma",heights:[40,80,120],ak:["a40","a80","a120"],batt:5,checks:["reports","obst","alt80","batt"],intro:[["ma","r1"],["ah","r2"]],tip:["ah","r3"]}};
+  road:{type:"corr",title:"roadT",desc:"roadD",tags:["tCorr","tInsp"],icon:"alert",tint:"rgba(255,69,58,.14)",tc:"#ff6b61",lead:"ma",heights:[40,80,120],ak:["a40","a80","a120"],batt:6.5,checks:["reports","obst","alt80","batt"],intro:[["ma","r1"],["ah","r2"]],tip:["ah","r3"]}};
 const ORDER=["map","farm","road"];
 const CAMF=17.3/12.29,ASPECT=3956/5280,SPEED=15,TURNF=1.15,ACC=6,EARTH=40075016.686,FRONT=.8;
 const ROUTE="#2fe0a8",SEL="#ffcc00";
@@ -1619,7 +1619,7 @@ function snap(){const d=SIM.d,G=SIM.G,tw=240,th=180,c=mk(tw,th),x=c.getContext("
   if(MODE==="real"){const v=viewOf(G.O),[cx,cy]=v.P(d.x,d.y),k=sc/v.s,mr=map.getContainer().getBoundingClientRect();
     x.save();x.translate(tw/2,th/2);x.rotate(-d.yaw);x.scale(k,k);x.translate(-cx,-cy);map.getPane("tilePane").querySelectorAll("img.leaflet-tile-loaded").forEach(img=>{const r=img.getBoundingClientRect();x.drawImage(img,r.left-mr.left,r.top-mr.top,r.width,r.height);});x.restore();}
   else{x.save();x.translate(tw/2,th/2);x.rotate(-d.yaw);x.translate(-tw/2,-th/2);drawWorld(x,{cx:d.x,cy:d.y,s:sc,w:tw,h:th},{tm:performance.now()/1000});x.restore();}
-  if(SIM.key==="road"){x.save();x.translate(tw/2,th/2);x.rotate(-d.yaw);G.spots.forEach((sp,j)=>drawIncident(x,(sp[0]-d.x)*sc,(sp[1]-d.y)*sc,sc,j,sp[2]||0));x.restore();}
+  if(SIM.key==="road"){x.save();x.translate(tw/2,th/2);x.rotate(-d.yaw);G.spots.forEach((sp,j)=>drawIncident(x,(sp[0]-d.x)*sc,(sp[1]-d.y)*sc,sc,(G.kinds||[0,1,2])[j],sp[2]||0));x.restore();}
   return c.toDataURL("image/jpeg",.8);}
 
 /* ============ products: orthomosaic + NDVI ============ */
@@ -1662,7 +1662,7 @@ function buildProduct(){const k=SIM.key;const box=$("#cmpBox");if(!box)return;
     else{const r=ndvi(nw);SIM.ndviStats=r;$("#resV").textContent=t("res_farm",{h:r.healthy});mountSlider($("#cmpBox"),nw,r.img,t("rgb"),t("ndvi"));
       const lg=$("#ndviLeg");if(lg)lg.innerHTML=[["#28964a","healthy",r.healthy+"%"],["#f4d250","stressed",r.stressed+"%"],["#c43e2e","bare",""]].map(([c,l,v])=>`<span style="display:flex;gap:6px;align-items:center"><i style="width:12px;height:12px;border-radius:3px;background:${c};display:inline-block"></i>${t(l)} ${v}</span>`).join("");}};
   if(SIM.product){use(...SIM.product);return;}captureArea((nw,old)=>{SIM.product=[nw,old];use(nw,old);});}
-function dmgHTML(){const G=SIM.G;return`<div class="dmg">${G.spots.map((sp,j)=>{const ll=m2ll(G.O,sp[0],sp[1]);return`<div>${SIM.dmg&&SIM.dmg[j]?`<img alt="" src="${SIM.dmg[j]}">`:""}<b>${t("dmg"+j)}</b><small>${ll[0].toFixed(5)}° N, ${ll[1].toFixed(5)}° E</small></div>`;}).join("")}</div>`;}
+function dmgHTML(){const G=SIM.G;return`<div class="dmg">${G.spots.map((sp,j)=>{const ll=m2ll(G.O,sp[0],sp[1]);return`<div>${SIM.dmg&&SIM.dmg[j]?`<img alt="" src="${SIM.dmg[j]}">`:""}<b>${t("dmg"+(G.kinds||[0,1,2])[j])}</b><small>${ll[0].toFixed(5)}° N, ${ll[1].toFixed(5)}° E</small></div>`;}).join("")}</div>`;}
 /* ============ certificate ============ */
 function svgImg(svg){return new Promise(res=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>res(null);i.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg.includes("xmlns")?svg:svg.replace("<svg",'<svg xmlns="http://www.w3.org/2000/svg"'));});}
 async function certCanvas(){const W=1600,H=1130,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");const ar=S.lang==="ar";const C=SIM.cert||{stars:3};
@@ -1708,7 +1708,7 @@ function drawMission(x,v,tm,{flying,mini}){const G=SIM.G,P=v.P,s=v.s,m=SIM.mis,a
     if(flying&&SIM.cells&&!mini){x.fillStyle="rgba(47,224,168,.28)";for(const c of SIM.cells)if(c[3]){const[p,q]=P(c[0]-5,c[1]-5);x.fillRect(p,q,10*s+.6,10*s+.6);}}
     x.strokeStyle=SEL;x.lineWidth=mini?1.5:2.5;x.setLineDash([10,7]);x.strokeRect(a,b,A.w*s,A.h*s);x.restore();if(!mini&&!flying)tag(x,t(SIM.key==="farm"?"farm":"target"),a+A.w*s/2,b-34,SEL);}
   if(G.reports)G.reports.forEach((r,j)=>{const[a,b]=P(r[0],r[1]);const got=SIM.found.spots&&SIM.found.spots.includes(j);
-    if(flying&&!mini){const sp=G.spots[j];const[p,q]=P(sp[0],sp[1]);drawIncident(x,p,q,s,j,sp[2]||0);}
+    if(flying&&!mini){const sp=G.spots[j];const[p,q]=P(sp[0],sp[1]);drawIncident(x,p,q,s,(G.kinds||[0,1,2])[j],sp[2]||0);}
     if(mini){x.fillStyle=got?"#1fc36b":"#ff6b61";x.beginPath();x.arc(a,b,4,0,7);x.fill();return;}
     if(!flying){x.save();x.fillStyle="rgba(255,69,58,.1)";x.strokeStyle="#ff6b61";x.lineWidth=2;x.setLineDash([8,6]);x.beginPath();x.arc(a,b,40*s,0,7);x.fill();x.stroke();x.restore();pin(x,a,b,t("report")+" "+(j+1),"#ff6b61");}});
   drawObst(x,v,tm,flying,mini);
