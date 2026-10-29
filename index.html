@@ -951,14 +951,14 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     <div class="brand"><span class="mark" id="markHome"></span><span><b>SKY SURVEYOR</b><small data-i18n="product"></small></span></div>
     <div class="hrow"><button class="ib" data-act="lang" aria-label="Language"></button><button class="ib" data-act="sound" aria-label="Sound"></button><button class="ib" data-act="fs" aria-label="Full screen"></button></div>
   </div>
-  <div><span class="kick" data-i18n="festival"></span><h1 id="homeTitle"></h1></div>
+  <div><h1 id="homeTitle"></h1></div>
   <p class="sub" data-i18n="tagline"></p>
   <div class="crew">
     <div class="crewm"><span class="av" data-face="ma"></span><span><b data-i18n="maName"></b><small data-i18n="maRole"></small></span></div>
     <div class="crewm"><span class="av" data-face="ah"></span><span><b data-i18n="ahName"></b><small data-i18n="ahRole"></small></span></div>
   </div>
   <div class="grp"><span class="kick" data-i18n="choose"></span><div class="mlist" id="mlist"></div></div>
-  <div class="foot"><span id="mapSrc"></span><span>Salalah · Oman</span></div>
+  <span id="mapSrc" hidden></span>
 </section>
 
 <header id="topbar" hidden>
@@ -1008,7 +1008,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
       <div class="meter"><div class="row"><span data-i18n="battUse"></span><span id="battTxt"></span></div><div class="track"><i id="battBar"></i><em id="battMark"></em></div></div>
     </div>
   </div>
-  <div class="cta"><button class="btn blue lg wide" id="nextBtn" hidden></button><button class="btn go lg wide" id="flyBtn"></button><button class="skip" id="skipBtn" data-i18n="skip"></button></div>
+  <div class="cta"><button class="btn blue lg wide" id="nextBtn" hidden></button><button class="btn go lg wide" id="flyBtn"></button><button class="skip" id="skipBtn" hidden></button></div>
 </aside>
 
 <div id="fv" hidden>
