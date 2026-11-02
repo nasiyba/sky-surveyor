@@ -1360,7 +1360,7 @@ const MIS={
   farm:{type:"area",title:"farmT",desc:"farmD",tags:["tArea","tNdvi"],icon:"leaf",tint:"rgba(255,204,0,.14)",tc:"#ffcc00",lead:"ma",heights:[60,100,150],ak:["a60","a100","a150"],batt:7,checks:["cover","obst","overlap","gsd","legal","batt"],intro:[["ma","f1"],["ah","f2"]],tip:["ah","f3"]},
   road:{type:"corr",title:"roadT",desc:"roadD",tags:["tCorr","tInsp"],icon:"alert",tint:"rgba(255,69,58,.14)",tc:"#ff6b61",lead:"ma",heights:[40,80,120],ak:["a40","a80","a120"],batt:6.5,checks:["reports","obst","alt80","batt"],intro:[["ma","r1"],["ah","r2"]],tip:["ah","r3"]}};
 const ORDER=["map","farm","road"];
-const CAMF=17.3/12.29,ASPECT=3956/5280,SPEED=15,TURNF=1.15,ACC=6,EARTH=40075016.686,FRONT=.8;
+const CAMF=17.3/12.29,ASPECT=3956/5280,SPEED=15,TURNF=1.15,ACC=12,EARTH=40075016.686,FRONT=.8;
 const ROUTE="#2fe0a8",SEL="#ffcc00";
 
 /* ============ map + projection ============ */
@@ -1582,7 +1582,7 @@ function flyStep(dt){const f=SIM.fly,d=SIM.d,m=SIM.mis,G=SIM.G;if(!f||!f.running
   if(sl>1){const ty=Math.atan2(b[1]-a[1],b[0]-a[0])+Math.PI/2;let df=ty-d.yaw;while(df>Math.PI)df-=2*Math.PI;while(df<-Math.PI)df+=2*Math.PI;d.yaw+=df*Math.min(1,dt*6);}
   d.z=SIM.H*clamp(f.dist/50,0,1)*clamp((f.L-f.dist)/50,0,1);d.vz=dt>0?(d.z-z0)/(dt*ACC):0;
   if(f.L-f.dist<200&&!f.said.land){f.said.land=1;speak("ma","landing");}
-  if(d.z>=SIM.H*.9){const fh=fwOf(d.z)*ASPECT;if(f.dist-f.lastShot>=fh*(1-FRONT)*2){f.lastShot=f.dist;SIM.shots+=2;SIM.flash=.18;beep("shutter");const sh=$("#shutter");sh.classList.add("snap");setTimeout(()=>sh.classList.remove("snap"),120);if(SIM.photos.length<2||Math.random()<.12)addPhoto();}
+  if(d.z>=SIM.H*.9){const fh=fwOf(d.z)*ASPECT;const stp=fh*(1-FRONT)*2;if(f.dist-f.lastShot>=stp){const nS=Math.floor((f.dist-f.lastShot)/stp);f.lastShot+=nS*stp;SIM.shots+=2*nS;SIM.flash=.18;beep("shutter");const sh=$("#shutter");sh.classList.add("snap");setTimeout(()=>sh.classList.remove("snap"),120);if(SIM.photos.length<2||Math.random()<.12)addPhoto();}
     if(SIM.key==="road")G.spots.forEach((sp,j)=>{if(SIM.found.spots.includes(j)||!inFoot(d,sp[0],sp[1]))return;SIM.found.spots.push(j);SIM.flash=1;addPhoto();SIM.dmg[j]=SIM.photos[SIM.photos.length-1];beep("ok");speak("ma","rFound",{n:j+1});});
     if(SIM.cells)for(const c of SIM.cells){if(!c[3]&&inFoot(d,c[0],c[1]))c[3]=1;}}
   if(f.dist>=f.L){f.running=false;d.z=0;d.vz=0;endFlight();}}
