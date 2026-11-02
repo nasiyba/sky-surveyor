@@ -713,12 +713,12 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 /* HOME */
 #home{position:fixed;z-index:500;top:max(16px,env(safe-area-inset-top,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));inset-inline-start:max(16px,env(safe-area-inset-left,0px));width:min(460px,calc(100% - 32px));display:flex;flex-direction:column;gap:18px;padding:22px;overflow:auto;background:var(--panel);border-radius:18px;border:1px solid var(--line);box-shadow:0 20px 50px rgba(0,0,0,.5)}
 .hrow{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.brand{display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:flex-start;gap:12px}
 .brand .mark{width:40px;height:40px;border-radius:10px;background:#fff;display:grid;place-items:center}
 .brand .mark svg{width:26px;height:26px}
 .brand b{display:block;font-weight:700;font-size:16px;letter-spacing:.04em}
 .brand small{display:block;color:var(--muted);font-size:13px}
-.brand .by{display:flex;align-items:center;gap:8px;margin-top:6px;color:var(--muted);font-size:13px}
+.brand .by{display:block;margin-top:2px;color:#7fc241;font-size:13px;font-weight:600}
 .brand .byChip{display:inline-flex}
 .brand .byChip img{height:40px;width:auto;display:block}
 .kick{font-family:var(--cond);font-size:12.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
@@ -958,7 +958,7 @@ a.btn{text-decoration:none}
 
 <section id="home">
   <div class="hrow">
-    <div class="brand"><span class="mark" id="markHome"></span><span><b>SKY SURVEYOR</b><small data-i18n="product"></small><span class="by"><span data-i18n="byL"></span><span class="byChip"><img id="byLogo" alt="GIS Hub"></span></span></span></div>
+    <div class="brand"><span class="mark" id="markHome"></span><span><b>SKY SURVEYOR</b><small data-i18n="product"></small><span class="by" data-i18n="byL"></span></span></div>
     <div class="hrow"><button class="ib" data-act="lang" aria-label="Language"></button><button class="ib" data-act="sound" aria-label="Sound"></button><button class="ib" data-act="fs" aria-label="Full screen"></button></div>
   </div>
   <div><h1 id="homeTitle"></h1></div>
@@ -1042,7 +1042,7 @@ const T={
 en:{step1:"Analyze",st_ana:"Analyze the area",step2:"Plan route",step3:"Process data",
  anaT:"Site analysis",anaHint:"Tap every ? on the map to find out what it is. Some objects are tall, and drones must stay clear of them.",anaLeft:"{n} unknown object(s) left",anaDone:"All obstacles found. Now plan a safe route.",
  nextPlan:"Next: plan the route",unknown:"Unknown object",
- ob_tower:"Telecom tower",ob_crane:"Construction crane",ob_power:"High-voltage power line",byL:"by",nameL:"Pilot name",namePh:"Type your name",nameNeed:"Please type your name to start.",getCert:"Get my certificate",certKick:"Sky Surveyor · Drone Survey Pilot",certT:"Certificate of Achievement",certThis:"This certificate is proudly presented to",certFor:"for successfully completing a drone survey mission",certDate:"Date",certSave:"Save",certDone:"Done",ob_heli:"Hospital helipad",ob_sub:"Electricity substation",ob_building:"New building",ob_khor:"Khor bird habitat",ob_palm:"Tall coconut palms",ob_village:"Homes and animals",ob_trees:"Wadi trees",ob_ridge:"Rocky ridge",ob_view:"Viewpoint with visitors",ob_minaret:"Mosque minaret",
+ ob_tower:"Telecom tower",ob_crane:"Construction crane",ob_power:"High-voltage power line",byL:"by GIS Hub",nameL:"Pilot name",namePh:"Type your name",nameNeed:"Please type your name to start.",getCert:"Get my certificate",certKick:"Sky Surveyor · Drone Survey Pilot",certT:"Certificate of Achievement",certThis:"This certificate is proudly presented to",certFor:"for successfully completing a drone survey mission",certDate:"Date",certSave:"Save",certDone:"Done",ob_heli:"Hospital helipad",ob_sub:"Electricity substation",ob_building:"New building",ob_khor:"Khor bird habitat",ob_palm:"Tall coconut palms",ob_village:"Homes and animals",ob_trees:"Wadi trees",ob_ridge:"Rocky ridge",ob_view:"Viewpoint with visitors",ob_minaret:"Mosque minaret",
  obH:"{h} m tall",obZone:"No-fly zone",obRule:"Fly at least 30 m above it, or go around.",obRuleZone:"Never fly over it. Always go around.",
  clearAbove:"Clear: {d} m above",mustAvoid:"Too low: go around",avoided:"Avoided",conflict:"Route hits it!",
  cObst:"Route is safe from obstacles ({n} problem(s))",cObstOk:"Route is safe from all obstacles",
@@ -1097,7 +1097,7 @@ en:{step1:"Analyze",st_ana:"Analyze the area",step2:"Plan route",step3:"Process 
 ar:{step1:"تحليل",st_ana:"حلّل المنطقة",step2:"تخطيط المسار",step3:"معالجة البيانات",
  anaT:"تحليل الموقع",anaHint:"المس كل علامة ? على الخريطة لتعرف ما هي. بعض الأجسام عالية، ويجب أن تبتعد عنها الطائرة.",anaLeft:"{n} من الأجسام المجهولة متبقية",anaDone:"وجدت كل العوائق. الآن خطّط مسارًا آمنًا.",
  nextPlan:"التالي: خطّط المسار",unknown:"جسم مجهول",
- ob_tower:"برج اتصالات",ob_crane:"رافعة إنشاءات",ob_power:"خط كهرباء ضغط عالٍ",byL:"من",nameL:"اسم الطيّار",namePh:"اكتب اسمك",nameNeed:"اكتب اسمك لتبدأ.",getCert:"احصل على شهادتي",certKick:"Sky Surveyor · طيّار مسح بالطائرة المسيّرة",certT:"شهادة إنجاز",certThis:"تُمنح هذه الشهادة بكل فخر إلى",certFor:"لإتمامه مهمة مسح بالطائرة المسيّرة بنجاح",certDate:"التاريخ",certSave:"حفظ",certDone:"تم",ob_heli:"مهبط مروحيات المستشفى",ob_sub:"محطة كهرباء فرعية",ob_building:"مبنى جديد",ob_khor:"موطن طيور الخور",ob_palm:"أشجار نارجيل عالية",ob_village:"منازل ومواشٍ",ob_trees:"أشجار الوادي",ob_ridge:"حافة جبلية صخرية",ob_view:"استراحة مطلة فيها زوار",ob_minaret:"مئذنة مسجد",
+ ob_tower:"برج اتصالات",ob_crane:"رافعة إنشاءات",ob_power:"خط كهرباء ضغط عالٍ",byL:"من GIS Hub",nameL:"اسم الطيّار",namePh:"اكتب اسمك",nameNeed:"اكتب اسمك لتبدأ.",getCert:"احصل على شهادتي",certKick:"Sky Surveyor · طيّار مسح بالطائرة المسيّرة",certT:"شهادة إنجاز",certThis:"تُمنح هذه الشهادة بكل فخر إلى",certFor:"لإتمامه مهمة مسح بالطائرة المسيّرة بنجاح",certDate:"التاريخ",certSave:"حفظ",certDone:"تم",ob_heli:"مهبط مروحيات المستشفى",ob_sub:"محطة كهرباء فرعية",ob_building:"مبنى جديد",ob_khor:"موطن طيور الخور",ob_palm:"أشجار نارجيل عالية",ob_village:"منازل ومواشٍ",ob_trees:"أشجار الوادي",ob_ridge:"حافة جبلية صخرية",ob_view:"استراحة مطلة فيها زوار",ob_minaret:"مئذنة مسجد",
  obH:"ارتفاعه {h} م",obZone:"منطقة يُمنع الطيران فيها",obRule:"حلّق أعلى منه بـ 30 م على الأقل، أو التفّ حوله.",obRuleZone:"لا تحلّق فوقها أبدًا. التفّ حولها دائمًا.",
  clearAbove:"آمن: أعلى بـ {d} م",mustAvoid:"منخفض جدًا: التفّ حوله",avoided:"تم تجنّبه",conflict:"المسار يصطدم به!",
  cObst:"المسار آمن من العوائق ({n} مشكلة)",cObstOk:"المسار آمن من كل العوائق",
@@ -1668,7 +1668,6 @@ function buildProduct(){const k=SIM.key;const box=$("#cmpBox");if(!box)return;
       const lg=$("#ndviLeg");if(lg)lg.innerHTML=[["#28964a","healthy",r.healthy+"%"],["#f4d250","stressed",r.stressed+"%"],["#c43e2e","bare",""]].map(([c,l,v])=>`<span style="display:flex;gap:6px;align-items:center"><i style="width:12px;height:12px;border-radius:3px;background:${c};display:inline-block"></i>${t(l)} ${v}</span>`).join("");}};
   if(SIM.product){use(...SIM.product);return;}captureArea((nw,old)=>{SIM.product=[nw,old];use(nw,old);});}
 function dmgHTML(){const G=SIM.G;return`<div class="dmg">${G.spots.map((sp,j)=>{const ll=m2ll(G.O,sp[0],sp[1]);return`<div>${SIM.dmg&&SIM.dmg[j]?`<img alt="" src="${SIM.dmg[j]}">`:""}<b>${t("dmg"+(G.kinds||[0,1,2])[j])}</b><small>${ll[0].toFixed(5)}° N, ${ll[1].toFixed(5)}° E</small></div>`;}).join("")}</div>`;}
-document.getElementById("byLogo").src=LOGO;
 /* ============ certificate ============ */
 function svgImg(svg){return new Promise(res=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>res(null);i.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg.includes("xmlns")?svg:svg.replace("<svg",'<svg xmlns="http://www.w3.org/2000/svg"'));});}
 async function certCanvas(){const W=1600,H=1130,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");const ar=S.lang==="ar";const C=SIM.cert||{stars:3};
