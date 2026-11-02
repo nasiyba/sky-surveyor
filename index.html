@@ -1685,12 +1685,12 @@ function tileURLs(){const urls=new Set(),n=z=>2**z,X=(l,z)=>Math.floor((l+180)/3
     const M=350,xs=p.map(q=>q[0]),ys=p.map(q=>q[1]);const sw=m2ll(c.O,Math.min(...xs)-M,Math.max(...ys)+M),ne=m2ll(c.O,Math.max(...xs)+M,Math.min(...ys)-M);
     box(sw[0],sw[1],ne[0],ne[1],13,c.nz||19);}
   return[...urls];}
-async function cacheShell(){const c=await caches.open(SHELL_CACHE);const get=async u=>{try{const r=await fetch(u,{mode:"cors",credentials:"omit"});if(r.ok)await c.put(u,r);return r;}catch(_){return null;}};
+async function cacheShell(){const c=await caches.open(SHELL_CACHE);const get=async u=>{try{const r=await fetch(u,{mode:"cors",credentials:"omit"});if(!r.ok)return null;const keep=r.clone();await c.put(u,r);return keep;}catch(_){return null;}};
   try{const page=location.origin+location.pathname;const r=await fetch(page,{cache:"no-store"});if(r.ok)await c.put(page,r);}catch(_){}
   await get(LEAFLET_URL);const fl=document.querySelector('link[href*="fonts.googleapis.com/css2"]');
-  if(fl){const r=await get(fl.href);if(r){const css=await r.clone().text().catch(()=>"");const fonts=[...css.matchAll(/url\((https:[^)]+)\)/g)].map(m=>m[1]);for(const f of fonts)await get(f);}}}
+  if(fl){const r=await get(fl.href);if(r){const css=await r.text().catch(()=>"");const fonts=[...css.matchAll(/url\((https:[^)]+)\)/g)].map(m=>m[1]);await Promise.all(fonts.map(get));}}}
 async function downloadMaps(onProg){const urls=tileURLs(),c=await caches.open(TILE_CACHE);let done=0,fail=0,i=0;onProg(0,urls.length,0);
-  await cacheShell();try{if(navigator.storage&&navigator.storage.persist)await navigator.storage.persist();}catch(_){}
+  try{await cacheShell();}catch(_){}try{if(navigator.storage&&navigator.storage.persist)await navigator.storage.persist();}catch(_){}
   const worker=async()=>{while(i<urls.length){const u=urls[i++];try{if(!(await c.match(u,{ignoreVary:true}))){const r=await fetch(u,{mode:"cors",credentials:"omit"});if(!r.ok)throw 0;await c.put(u,r);}}catch(_){fail++;}done++;if(done%10===0||done===urls.length)onProg(done,urls.length,fail);}};
   await Promise.all([...Array(6)].map(worker));if(!fail)lsSet("ssMaps",OFF_VER+":"+urls.length);return{total:urls.length,fail};}
 function showOffline(){let busy=false;const draw=(html)=>{$("#card").innerHTML=html;};
