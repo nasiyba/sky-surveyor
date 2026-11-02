@@ -1381,7 +1381,7 @@ function setNZ(z){if(z===NZ)return;NZ=z;tiles.options.maxNativeZoom=z;tiles.redr
 const tiles=L.tileLayer(CONFIG.tiles,{maxNativeZoom:19,maxZoom:21,crossOrigin:"anonymous",attribution:CONFIG.attribution});
 /* ============ offline maps (service worker + saved tiles) ============ */
 const OFF_VER="v1",TILE_CACHE="ss-tiles-"+OFF_VER,SHELL_CACHE="ss-shell-"+OFF_VER,LEAFLET_URL="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";
-const canOffline=("serviceWorker" in navigator)&&("caches" in window)&&location.protocol==="https:"&&/github\.io$/.test(location.hostname);
+const canOffline=("serviceWorker" in navigator)&&("caches" in window)&&((location.protocol==="https:"&&/github\.io$/.test(location.hostname))||location.hostname==="localhost");
 if(canOffline)navigator.serviceWorker.register("sw.js").catch(()=>{});
 function lsGet(k){try{return localStorage.getItem(k);}catch(_){return null;}}
 function lsSet(k,v){try{localStorage.setItem(k,v);}catch(_){}}
@@ -1399,7 +1399,7 @@ function m2ll(O,x,y){return[O[0]-y/111320,O[1]+x/(111320*Math.cos(O[0]*Math.PI/1
 function viewOf(O,m=map){const p0=m.latLngToContainerPoint(O);const s=256*Math.pow(2,m.getZoom())/(EARTH*Math.cos(O[0]*Math.PI/180));return{p0,s,P:(x,y)=>[p0.x+x*s,p0.y+y*s],inv:(px,py)=>[(px-p0.x)/s,(py-p0.y)/s]};}
 
 let mini=null;
-function ensureMini(){if(mini)return;mini=L.map("mini",{zoomControl:false,attributionControl:false,dragging:false,touchZoom:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,zoomSnap:0,zoomAnimation:false,fadeAnimation:false});
+function ensureMini(){if(mini)return;mini=L.map("mini",{zoomControl:false,attributionControl:false,dragging:false,touchZoom:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,zoomSnap:1,zoomAnimation:false,fadeAnimation:false});
   if(MODE==="real")miniTiles=L.tileLayer(CONFIG.tiles,{maxNativeZoom:NZ,maxZoom:21,crossOrigin:"anonymous"}).addTo(mini);else $("#miniWrap").style.background="#8db86a";mini.setView(map.getCenter(),14);}
 
 const ov=$("#ov"),ox=ov.getContext("2d"),mo=$("#miniOv"),mx=mo.getContext("2d"),at=$("#att"),ax=at.getContext("2d");let OW=0,OH=0,DPR=1;
@@ -1682,8 +1682,8 @@ function tileURLs(){const urls=new Set(),n=z=>2**z,X=(l,z)=>Math.floor((l+180)/3
   box(16.95,53.97,17.10,54.22,11,14); // home screen overview of Salalah
   for(const k of ORDER){const c=CONFIG.real[k],p=[c.home];if(c.area)p.push([c.area.x,c.area.y],[c.area.x+c.area.w,c.area.y+c.area.h]);(c.spots||[]).forEach(q=>p.push(q));
     (c.obst||[]).forEach(o=>{if(o.c)p.push([o.c[0]-(o.r||0),o.c[1]-(o.r||0)],[o.c[0]+(o.r||0),o.c[1]+(o.r||0)]);else p.push(o.a,o.b);});
-    const M=350,xs=p.map(q=>q[0]),ys=p.map(q=>q[1]);const sw=m2ll(c.O,Math.min(...xs)-M,Math.max(...ys)+M),ne=m2ll(c.O,Math.max(...xs)+M,Math.min(...ys)-M);
-    box(sw[0],sw[1],ne[0],ne[1],13,c.nz||19);}
+    const xs=p.map(q=>q[0]),ys=p.map(q=>q[1]),top=c.nz||19;
+    for(let z=13;z<=top;z++){const M=z<=16?1500:z===17?1000:z===18?700:450;const sw=m2ll(c.O,Math.min(...xs)-M,Math.max(...ys)+M),ne=m2ll(c.O,Math.max(...xs)+M,Math.min(...ys)-M);box(sw[0],sw[1],ne[0],ne[1],z,z);}}
   return[...urls];}
 async function cacheShell(){const c=await caches.open(SHELL_CACHE);const get=async u=>{try{const r=await fetch(u,{mode:"cors",credentials:"omit"});if(!r.ok)return null;const keep=r.clone();await c.put(u,r);return keep;}catch(_){return null;}};
   try{const page=location.origin+location.pathname;const r=await fetch(page,{cache:"no-store"});if(r.ok)await c.put(page,r);}catch(_){}
@@ -1696,7 +1696,7 @@ async function downloadMaps(onProg){const urls=tileURLs(),c=await caches.open(TI
 function showOffline(){let busy=false;const draw=(html)=>{$("#card").innerHTML=html;};
   const base=()=>{const ready=offlineReady();const n=tileURLs().length;
     return`<span class="kick">${t("offKick")}</span><h2>${t("offT")}</h2><p class="sub" style="margin:0;color:var(--muted)">${t("offD")}</p>
-    <div class="offstat ${ready?"ok":""}">${ico(ready?"check":"dl")}<span>${ready?t("offReady"):t("offSize",{n,mb:Math.round(n*0.025)})}</span></div>
+    <div class="offstat ${ready?"ok":""}">${ico(ready?"check":"dl")}<span>${ready?t("offReady"):t("offSize",{n,mb:Math.round(n*0.015)})}</span></div>
     ${canOffline?"":`<p style="margin:0;color:var(--warn)">${t("offNA")}</p>`}
     <div class="meter" id="offMeter" hidden><div class="row"><span id="offTxt"></span><span id="offPct"></span></div><div class="track"><i id="offBar" style="width:0%"></i></div></div>
     <div class="btnrow"><button class="btn dark" id="offClose">${t("offClose")}</button><button class="btn go lg" id="offGo" ${canOffline?"":"disabled"}>${ico("dl")}${t(ready?"offAgain":"offBtn")}</button></div>`;};
